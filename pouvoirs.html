@@ -34,6 +34,21 @@
       <h1>Les Pouvoirs</h1>
       <p>Maîtrisez les pouvoirs qui façonnent votre destinée. Chaque talent renferme une puissance, chaque capacité
         une stratégie.</p>
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="powers-search-input" placeholder="Rechercher un talent, une compétence..." aria-label="Rechercher un pouvoir" autocomplete="off" />
+        <button id="clear-search-btn" class="clear-search-btn" aria-label="Effacer la recherche" style="display: none;">&times;</button>
+      </div>
+    </section>
+
+    <!-- Section de résultats de recherche -->
+    <section id="search-results-section" class="search-results-section" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Résultats de recherche (<span id="search-results-count">0</span>)</h2>
+      </div>
+      <div id="search-results-grid" class="search-results-grid">
+        <!-- Rempli dynamiquement por JS -->
+      </div>
     </section>
 
     <!-- Section des Talents Naturels -->
@@ -61,7 +76,7 @@
     </div>
 
     <!-- En-tête de la section des compétences avec bouton de repli -->
-    <div class="section-header">
+    <div class="section-header competences-header">
       <h2 class="section-title">Les compétences</h2>
       <button id="toggle-grid-btn" class="toggle-btn" aria-label="Réduire/Agrandir la section">
         <span class="toggle-btn__icon">−</span>

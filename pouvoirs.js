@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupToggleTalentsButton();
   setupScrollAnimation();
   setupEspritTooltips();
+  setupSearch();
 });
 
 function setupToggleSectionButton() {
@@ -1229,4 +1230,305 @@ function generateSidebarCardHTML(details) {
     </div>
     ${ccHTML}
   `;
+}
+
+// ========================================
+// RECHERCHE UNIFIÉE (TALENTS, COMPÉTENCES & ESPRITS)
+// ========================================
+
+function setupSearch() {
+  const searchInput = document.getElementById('powers-search-input');
+  const clearBtn = document.getElementById('clear-search-btn');
+  const resultsSection = document.getElementById('search-results-section');
+  const resultsGrid = document.getElementById('search-results-grid');
+
+  if (!searchInput || !resultsSection || !resultsGrid) return;
+
+  resultsSection.style.display = 'none';
+
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    if (query.length > 0) {
+      if (clearBtn) clearBtn.style.display = 'block';
+      performSearch(query);
+    } else {
+      if (clearBtn) clearBtn.style.display = 'none';
+      resetSearch();
+    }
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      resetSearch();
+      searchInput.focus();
+    });
+  }
+}
+
+function cleanStringForSearch(str) {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function performSearch(query) {
+  const cleanQuery = cleanStringForSearch(query);
+  const results = [];
+
+  // 1. Recherche dans les talents naturels
+  allTalents.forEach(talent => {
+    const cleanNom = cleanStringForSearch(talent.nom);
+    const cleanEffet = cleanStringForSearch(talent.effets);
+    if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery)) {
+      results.push({
+        type: 'talent',
+        data: talent,
+        score: cleanNom.startsWith(cleanQuery) ? 2 : 1
+      });
+    }
+  });
+
+  // 2. Recherche dans les compétences communes
+  allCompetences.forEach(comp => {
+    const cleanNom = cleanStringForSearch(comp.compétence);
+    const cleanEffet = cleanStringForSearch(comp.effet);
+    const cleanType = cleanStringForSearch(comp.type);
+    if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery) || cleanType.includes(cleanQuery)) {
+      results.push({
+        type: 'competence',
+        data: comp,
+        score: cleanNom.startsWith(cleanQuery) ? 2 : 1
+      });
+    }
+  });
+
+  // 3. Recherche dans les compétences d'esprits
+  allEspritCompetences.forEach(comp => {
+    const cleanNom = cleanStringForSearch(comp.nom);
+    const cleanEffet = cleanStringForSearch(comp.effet);
+    const cleanType = cleanStringForSearch(comp.type);
+    const cleanEsprit = cleanStringForSearch(comp.esprit);
+    if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery) || cleanType.includes(cleanQuery) || cleanEsprit.includes(cleanQuery)) {
+      results.push({
+        type: 'esprit',
+        data: comp,
+        score: cleanNom.startsWith(cleanQuery) ? 2 : 1
+      });
+    }
+  });
+
+  // Trier par pertinence (les correspondances en début de nom d'abord)
+  results.sort((a, b) => b.score - a.score);
+
+  displaySearchResults(results, query);
+}
+
+function displaySearchResults(results, query) {
+  const resultsSection = document.getElementById('search-results-section');
+  const resultsGrid = document.getElementById('search-results-grid');
+  const resultsCount = document.getElementById('search-results-count');
+
+  if (!resultsSection || !resultsGrid) return;
+
+  resultsGrid.innerHTML = '';
+  if (resultsCount) resultsCount.textContent = results.length;
+  resultsSection.style.display = 'block';
+
+  // Masquer les sections par défaut pour se concentrer sur la recherche
+  toggleDefaultSections(false);
+
+  if (results.length === 0) {
+    resultsGrid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; margin: 20px 0;"><p>Aucun pouvoir ne correspond à votre recherche.</p></div>';
+    return;
+  }
+
+  results.forEach((result, index) => {
+    let card;
+    if (result.type === 'talent') {
+      card = createTalentSearchResultCard(result.data, query);
+    } else if (result.type === 'competence') {
+      card = createCompetenceSearchResultCard(result.data, query);
+    } else {
+      card = createEspritSearchResultCard(result.data, query);
+    }
+    
+    card.classList.add('fade-in');
+    resultsGrid.appendChild(card);
+    card.style.animationDelay = `${index * 0.03}s`;
+
+    card.addEventListener('animationend', function handleEntranceEnd(e) {
+      if (e.animationName === 'cardEntrance') {
+        card.classList.remove('fade-in');
+        card.style.animationDelay = '';
+        card.removeEventListener('animationend', handleEntranceEnd);
+      }
+    });
+  });
+}
+
+function resetSearch() {
+  const resultsSection = document.getElementById('search-results-section');
+  const resultsGrid = document.getElementById('search-results-grid');
+  
+  if (resultsSection) resultsSection.style.display = 'none';
+  if (resultsGrid) resultsGrid.innerHTML = '';
+  
+  toggleDefaultSections(true);
+}
+
+function toggleDefaultSections(show) {
+  const elements = [
+    document.querySelector('.talents-header'),
+    document.getElementById('talents-grid-container'),
+    document.querySelector('.competences-header'),
+    document.getElementById('competences-grid-container'),
+    document.querySelector('.esprits-header'),
+    document.getElementById('esprits-grid-container')
+  ];
+
+  elements.forEach(el => {
+    if (el) {
+      el.style.display = show ? '' : 'none';
+    }
+  });
+}
+
+function highlightText(text, query) {
+  if (!text || !query) return text;
+  
+  const cleanText = cleanStringForSearch(text);
+  const cleanQuery = cleanStringForSearch(query);
+  
+  if (!cleanText.includes(cleanQuery)) return text;
+  
+  let result = '';
+  let lastIndex = 0;
+  let index = cleanText.indexOf(cleanQuery);
+  
+  while (index !== -1) {
+    result += text.substring(lastIndex, index);
+    const match = text.substring(index, index + query.length);
+    result += `<mark class="search-highlight">${match}</mark>`;
+    
+    lastIndex = index + query.length;
+    index = cleanText.indexOf(cleanQuery, lastIndex);
+  }
+  result += text.substring(lastIndex);
+  return result;
+}
+
+function createTalentSearchResultCard(talent, query) {
+  const card = document.createElement('div');
+  const type = getTalentType(talent);
+  card.className = 'talent-card';
+  card.setAttribute('data-type', type);
+  const emoji = getTalentEmoji(talent.nom);
+
+  const highlightedName = highlightText(capitalize(talent.nom.trim()), query);
+  const highlightedEffect = highlightText(talent.effets, query);
+
+  card.innerHTML = `
+    <span class="search-result-badge talent">Talent Naturel</span>
+    <div class="talent-card__header" style="padding-right: 120px;">
+      <div class="talent-card__title">${highlightedName}</div>
+      <span class="talent-card__icon">${emoji}</span>
+    </div>
+    <div class="talent-card__effect" style="margin-top: 10px;">${highlightedEffect}</div>
+  `;
+  return card;
+}
+
+function createCompetenceSearchResultCard(comp, query) {
+  const card = document.createElement('div');
+  const type = normalizeType(comp.type || 'attaque');
+  card.className = 'arcane-card';
+  card.setAttribute('data-type', type);
+
+  const emoji = typeEmojis[type] || '⚡';
+  const cout = comp["Point d'utilisation"] || comp.cout || 0;
+  const highlightedName = highlightText(capitalize(comp.compétence), query);
+  const highlightedEffect = highlightText(comp.effet || 'Aucun effet spécifié', query);
+  const degats = comp.dégats || '-';
+  const statut = comp.statut || comp.statu || '';
+  const contreCoup = comp['contre coup'] || '';
+
+  let statutHTML = '';
+  if (statut && statut !== '/' && statut !== '-') {
+    statutHTML = `<div class="arcane-card__status"><strong>Statut:</strong> ${highlightText(statut, query)}</div>`;
+  }
+
+  let ccHTML = '';
+  if (contreCoup && contreCoup !== '/' && contreCoup !== '-') {
+    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${highlightText(contreCoup, query)}</div>`;
+  }
+
+  card.innerHTML = `
+    <span class="search-result-badge competence">Compétence</span>
+    <div class="arcane-card__header" style="padding-right: 120px;">
+      <div class="arcane-card__title">${highlightedName}</div>
+      <span class="arcane-card__type">${capitalize(type)}</span>
+    </div>
+    <div class="arcane-card__icon">${emoji}</div>
+    <div class="arcane-card__content">
+      <div class="arcane-card__footer">
+        <div class="arcane-card__description">${highlightedEffect}</div>
+        ${statutHTML}
+        ${ccHTML}
+        <div class="arcane-card__meta">
+          <span>Dégâts: ${capitalize(degats)}</span>
+          <span>Coût: ${cout} PU</span>
+        </div>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function createEspritSearchResultCard(comp, query) {
+  const card = document.createElement('div');
+  const type = normalizeType(comp.type || 'attaque');
+  card.className = 'arcane-card';
+  card.setAttribute('data-type', type);
+
+  const emoji = typeEmojis[type] || '🔮';
+  const cout = comp.pu || '/';
+  const highlightedName = highlightText(capitalize(comp.nom), query);
+  const highlightedEffect = highlightText(comp.effet || 'Aucun effet spécifié', query);
+  const degats = comp.degats || '/';
+  const contreCoup = comp.contreCoup || '';
+  const esprit = comp.esprit || '';
+  const genre = comp.genre || 'actif';
+
+  let ccHTML = '';
+  if (contreCoup && contreCoup !== '/' && contreCoup !== '-') {
+    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${highlightText(contreCoup, query)}</div>`;
+  }
+
+  const genreText = genre === 'passif' ? 'Passif' : `${cout} PU`;
+
+  card.innerHTML = `
+    <span class="search-result-badge esprit">Esprit: ${capitalize(esprit)}</span>
+    <div class="arcane-card__header" style="padding-right: 140px;">
+      <div class="arcane-card__title">${highlightedName}</div>
+      <span class="arcane-card__type" style="background: rgba(130, 80, 220, 0.25); border-color: rgba(130, 80, 220, 0.5); color: #d6c5f0;">
+        ${capitalize(type)}
+      </span>
+    </div>
+    <div class="arcane-card__icon">${emoji}</div>
+    <div class="arcane-card__content">
+      <div class="arcane-card__footer">
+        <div class="arcane-card__description">${highlightedEffect}</div>
+        ${ccHTML}
+        <div class="arcane-card__meta">
+          <span>Dégâts: ${capitalize(degats)}</span>
+          <span>Type: ${capitalize(genreText)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  return card;
 }
