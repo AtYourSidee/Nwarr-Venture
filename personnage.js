@@ -356,13 +356,11 @@ async function showCharacterSheet(user, isInitialLoad = false) {
   const maxPv = Math.max(100, charData.stats.pv);
   const maxDeg = Math.max(50, charData.stats.deg);
   const maxVit = Math.max(50, charData.stats.vit);
-  const maxDef = Math.max(50, charData.stats.def);
 
   // Afficher les barres de stats et valeurs
   updateStatItem('pv', charData.stats.pv, maxPv, true);
   updateStatItem('deg', charData.stats.deg, maxDeg);
   updateStatItem('vit', charData.stats.vit, maxVit);
-  updateStatItem('def', charData.stats.def, maxDef);
 
   // Afficher le pacte spirituel
   updatePactCard(charData.pact);
