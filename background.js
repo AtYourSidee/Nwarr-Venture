@@ -182,10 +182,66 @@ function onClick(event) {
   });
 }
 
+function saveBackgroundState() {
+  try {
+    const bgState = {
+      stars: stars.map(s => ({
+        x: s.x,
+        y: s.y,
+        x0: s.x0,
+        y0: s.y0,
+        size: s.size,
+        color: s.color,
+        baseAlpha: s.baseAlpha,
+        alpha: s.alpha,
+        vx: s.vx,
+        vy: s.vy,
+        phase: s.phase
+      })),
+      nebulae: nebulae.map(n => ({
+        x: n.x,
+        y: n.y,
+        radius: n.radius,
+        speed: n.speed,
+        color: n.color,
+        offset: n.offset
+      })),
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+    sessionStorage.setItem('nwarr_bg_state', JSON.stringify(bgState));
+  } catch (e) {
+    console.warn("Impossible de sauvegarder l'état du background:", e);
+  }
+}
+
+function loadBackgroundState() {
+  try {
+    const saved = sessionStorage.getItem('nwarr_bg_state');
+    if (saved) {
+      const state = JSON.parse(saved);
+      // Restaurer uniquement si la taille de la fenêtre est similaire
+      if (Math.abs(state.width - window.innerWidth) < 120 && Math.abs(state.height - window.innerHeight) < 120) {
+        stars = state.stars;
+        nebulae = state.nebulae;
+        return true;
+      }
+    }
+  } catch (e) {
+    console.warn("Impossible de restaurer l'état du background:", e);
+  }
+  return false;
+}
+
 function init() {
   resizeCanvas();
-  createStars();
-  createNebulae();
+  
+  const restored = loadBackgroundState();
+  if (!restored) {
+    createStars();
+    createNebulae();
+  }
+
   window.addEventListener('resize', () => {
     resizeCanvas();
     createStars();
@@ -193,6 +249,7 @@ function init() {
   });
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('click', onClick);
+  window.addEventListener('beforeunload', saveBackgroundState);
   requestAnimationFrame(animate);
 }
 
