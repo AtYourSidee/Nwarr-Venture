@@ -34,9 +34,9 @@ let activeSpiritId = null;
 // INITIALISATION AU CHARGEMENT DE LA PAGE
 // ========================================
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadCompetences();
-  loadEsprits();
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadCompetences();
+  await loadEsprits();
   setupFilters();
   setupTalentFilters();
   setupToggleSectionButton();
