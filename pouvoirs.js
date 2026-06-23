@@ -1242,9 +1242,8 @@ function setupSearch() {
   const searchInput = document.getElementById('powers-search-input');
   const clearBtn = document.getElementById('clear-search-btn');
   const resultsSection = document.getElementById('search-results-section');
-  const resultsGrid = document.getElementById('search-results-grid');
 
-  if (!searchInput || !resultsSection || !resultsGrid) return;
+  if (!searchInput || !resultsSection) return;
 
   resultsSection.style.display = 'none';
 
