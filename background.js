@@ -163,6 +163,25 @@ function onMouseMove(event) {
   mouse.y = event.clientY;
 }
 
+function onClick(event) {
+  const clickX = event.clientX;
+  const clickY = event.clientY;
+  const explosionRadius = 350;
+  const explosionForce = 16;
+
+  stars.forEach((star) => {
+    const dx = star.x - clickX;
+    const dy = star.y - clickY;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance < explosionRadius && distance > 0) {
+      const force = (1 - distance / explosionRadius) * explosionForce;
+      star.vx += (dx / distance) * force;
+      star.vy += (dy / distance) * force;
+    }
+  });
+}
+
 function init() {
   resizeCanvas();
   createStars();
@@ -173,6 +192,7 @@ function init() {
     createNebulae();
   });
   window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('click', onClick);
   requestAnimationFrame(animate);
 }
 
