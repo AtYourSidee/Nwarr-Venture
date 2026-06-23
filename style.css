@@ -299,20 +299,20 @@ body {
    PAGE TRANSITIONS AND FLUIDITY
    ======================================== */
 
-body {
+.page__content {
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 0.35s ease-in-out, transform 0.35s ease-out;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-out;
 }
 
-body.page-transition-active {
+.page__content.page-transition-active {
   opacity: 1;
   transform: translateY(0);
 }
 
-body.page-transition-out {
+.page__content.page-transition-out {
   opacity: 0 !important;
   transform: translateY(-4px) !important;
-  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in !important;
+  transition: opacity 0.22s ease-in-out, transform 0.22s ease-in !important;
 }
 

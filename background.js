@@ -203,8 +203,11 @@ init();
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Activer le fondu d'entrée
-  document.body.classList.add('page-transition-active');
+  const content = document.querySelector('.page__content');
+  if (content) {
+    // Activer le fondu d'entrée sur le contenu
+    content.classList.add('page-transition-active');
+  }
 
   // Intercepter les clics pour jouer le fondu de sortie
   document.body.addEventListener('click', (e) => {
@@ -221,12 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Intercepter uniquement si c'est le même site et pas juste une ancre
         if (currentUrl.origin === targetUrl.origin && currentUrl.pathname !== targetUrl.pathname) {
           e.preventDefault();
-          document.body.classList.remove('page-transition-active');
-          document.body.classList.add('page-transition-out');
+          if (content) {
+            content.classList.remove('page-transition-active');
+            content.classList.add('page-transition-out');
+          }
 
           setTimeout(() => {
             window.location.href = href;
-          }, 320); // Doit correspondre à la durée de la transition CSS
+          }, 260); // Doit correspondre à la durée de la transition CSS du contenu
         }
       } catch (err) {
         // En cas d'erreur de parsing d'URL, laisser le comportement par défaut
