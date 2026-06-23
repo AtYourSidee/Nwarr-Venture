@@ -1504,9 +1504,6 @@ function createTalentSearchResultCard(talent, query) {
 
   card.innerHTML = `
     <div class="talent-card__header">
-      <div class="search-result-badge-container">
-        <span class="search-result-badge talent">Talent Naturel</span>
-      </div>
       <div class="talent-card__title">${highlightedName}</div>
       <span class="talent-card__icon">${emoji}</span>
     </div>
@@ -1541,9 +1538,6 @@ function createCompetenceSearchResultCard(comp, query) {
 
   card.innerHTML = `
     <div class="arcane-card__header">
-      <div class="search-result-badge-container">
-        <span class="search-result-badge competence">Compétence</span>
-      </div>
       <div class="arcane-card__title">${highlightedName}</div>
       <span class="arcane-card__type">${capitalize(type)}</span>
     </div>

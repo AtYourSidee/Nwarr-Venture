@@ -197,3 +197,41 @@ function init() {
 }
 
 init();
+
+// ========================================
+// TRANSITIONS DE PAGE ET FLUIDITÉ
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Activer le fondu d'entrée
+  document.body.classList.add('page-transition-active');
+
+  // Intercepter les clics pour jouer le fondu de sortie
+  document.body.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    // Ne pas intercepter les ancres locales, liens javascript ou cibles externes/nouvel onglet
+    if (href && !href.startsWith('#') && !href.startsWith('javascript:') && !link.target) {
+      try {
+        const currentUrl = new URL(window.location.href);
+        const targetUrl = new URL(href, window.location.href);
+
+        // Intercepter uniquement si c'est le même site et pas juste une ancre
+        if (currentUrl.origin === targetUrl.origin && currentUrl.pathname !== targetUrl.pathname) {
+          e.preventDefault();
+          document.body.classList.remove('page-transition-active');
+          document.body.classList.add('page-transition-out');
+
+          setTimeout(() => {
+            window.location.href = href;
+          }, 320); // Doit correspondre à la durée de la transition CSS
+        }
+      } catch (err) {
+        // En cas d'erreur de parsing d'URL, laisser le comportement par défaut
+      }
+    }
+  });
+});
+

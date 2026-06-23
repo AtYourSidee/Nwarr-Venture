@@ -38,6 +38,8 @@ async function initApp() {
   document.getElementById('demo-login-btn').addEventListener('click', startDemoMode);
   document.getElementById('logout-btn').addEventListener('click', handleLogout);
 
+  let isFirstAuthCheck = true;
+
   if (supabaseClient) {
     // Écouter les changements d'état d'authentification Supabase
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
@@ -49,15 +51,21 @@ async function initApp() {
           isDemo: false,
           id: session.user.id
         };
-        await showCharacterSheet(currentUser);
+        await showCharacterSheet(currentUser, isFirstAuthCheck);
       } else {
         // Hors ligne / non connecté
         if (!currentUser || !currentUser.isDemo) {
           currentUser = null;
-          document.getElementById('character-section').style.display = 'none';
-          document.getElementById('login-section').style.display = 'flex';
+          const loginSection = document.getElementById('login-section');
+          const charSection = document.getElementById('character-section');
+          if (charSection.style.display !== 'none') {
+            transitionSection(charSection, loginSection, 'flex');
+          } else {
+            loginSection.style.display = 'flex';
+          }
         }
       }
+      isFirstAuthCheck = false;
     });
   } else {
     // Mode simulation / hors ligne local
@@ -124,7 +132,7 @@ function checkLocalStorageSession() {
   if (savedUser) {
     try {
       currentUser = JSON.parse(savedUser);
-      showCharacterSheet(currentUser);
+      showCharacterSheet(currentUser, true);
     } catch {
       localStorage.removeItem('nwarr_user');
     }
@@ -146,7 +154,7 @@ function startDemoMode() {
   };
 
   localStorage.setItem('nwarr_user', JSON.stringify(currentUser));
-  showCharacterSheet(currentUser);
+  showCharacterSheet(currentUser, false);
 }
 
 async function handleLogout() {
@@ -158,8 +166,9 @@ async function handleLogout() {
   localStorage.removeItem('nwarr_token');
   currentUser = null;
 
-  document.getElementById('character-section').style.display = 'none';
-  document.getElementById('login-section').style.display = 'flex';
+  const loginSection = document.getElementById('login-section');
+  const charSection = document.getElementById('character-section');
+  transitionSection(charSection, loginSection, 'flex');
 }
 
 // ========================================================
@@ -309,10 +318,23 @@ async function fetchCharacterFromSupabase(username) {
 // GÉNÉRATEUR ET AFFICHAGE DU PERSONNAGE
 // ========================================================
 
-async function showCharacterSheet(user) {
-  // Masquer l'écran de connexion et afficher la fiche
-  document.getElementById('login-section').style.display = 'none';
-  document.getElementById('character-section').style.display = 'block';
+async function showCharacterSheet(user, isInitialLoad = false) {
+  const loginSection = document.getElementById('login-section');
+  const charSection = document.getElementById('character-section');
+  if (isInitialLoad) {
+    if (loginSection) loginSection.style.display = 'none';
+    if (charSection) {
+      charSection.style.display = 'block';
+      charSection.classList.add('fade-in-section');
+    }
+  } else {
+    if (loginSection && loginSection.style.display !== 'none') {
+      transitionSection(loginSection, charSection, 'block');
+    } else if (charSection) {
+      charSection.style.display = 'block';
+      charSection.classList.add('fade-in-section');
+    }
+  }
 
   // Tenter de récupérer le personnage depuis Supabase, sinon fallback déterministe
   let charData = await fetchCharacterFromSupabase(user.username);
@@ -604,3 +626,18 @@ function renderInventory(inventory) {
     container.appendChild(itemEl);
   });
 }
+
+function transitionSection(fromEl, toEl, toDisplay = 'block') {
+  if (!fromEl || !toEl) return;
+  fromEl.classList.add('fade-out-section');
+  fromEl.classList.remove('fade-in-section');
+  
+  setTimeout(() => {
+    fromEl.style.display = 'none';
+    fromEl.classList.remove('fade-out-section');
+    
+    toEl.style.display = toDisplay;
+    toEl.classList.add('fade-in-section');
+  }, 350);
+}
+

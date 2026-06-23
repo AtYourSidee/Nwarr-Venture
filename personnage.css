@@ -629,3 +629,34 @@
     gap: 20px;
   }
 }
+
+/* Transitions de connexion et de fiche personnage */
+.auth-section,
+.character-sheet {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.auth-section.fade-out-section,
+.character-sheet.fade-out-section {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.auth-section.fade-in-section,
+.character-sheet.fade-in-section {
+  animation: sectionFadeIn 0.4s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
