@@ -18,6 +18,8 @@ let currentUser = null;
 let allCompetences = [];
 let allTalents = [];
 let allEsprits = [];
+let allEspritCompetences = [];
+let allStatusEffects = [];
 let supabaseClient = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -86,6 +88,7 @@ async function loadGameData() {
       const data = await compRes.json();
       allCompetences = data['compétences commune'] || [];
       allTalents = data['Talent naturel'] || [];
+      allEspritCompetences = extractEspritCompetences(data["compétences d'esprit"] || []);
     }
   } catch (err) {
     console.warn('Impossible de charger les compétences.', err);
@@ -102,6 +105,61 @@ async function loadGameData() {
   } catch (err) {
     console.warn('Impossible de charger les esprits.', err);
   }
+
+  try {
+    let statusRes = await fetch('data/altérations_d_etats.json');
+    if (!statusRes.ok) {
+      statusRes = await fetch('altérations_d_etats.json');
+    }
+    if (statusRes.ok) {
+      allStatusEffects = await statusRes.json();
+    }
+  } catch (err) {
+    console.warn('Impossible de charger les altérations d\'états.', err);
+  }
+}
+
+function extractEspritCompetences(rawEspritList) {
+  if (!Array.isArray(rawEspritList)) return [];
+
+  const result = [];
+  for (let i = 1; i < rawEspritList.length; i++) {
+    const item = rawEspritList[i];
+    if (!item || typeof item !== 'object') continue;
+
+    result.push({
+      nom: (item.Column1 || '').trim().toLowerCase(),
+      type: (item.Column2 || '').trim().toLowerCase(),
+      pu: item.Column3 || '/',
+      effet: item.Column4 || '',
+      contreCoup: item.Column6 || '/',
+      degats: item.Column7 || '/',
+      esprit: (item.Column8 || '').trim().toLowerCase(),
+      genre: (item['0'] || '').trim().toLowerCase()
+    });
+  }
+  return result;
+}
+
+function normalizeName(name) {
+  if (!name) return '';
+  return name
+    .toLowerCase()
+    .trim()
+    // remove content in parentheses
+    .replace(/\s*\([^)]*\)/g, '')
+    // replace accents
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    // normalize double p, double t, etc.
+    .replace(/pp/g, 'p')
+    .replace(/tt/g, 't')
+    .replace(/mm/g, 'm')
+    .replace(/ll/g, 'l')
+    .replace(/cc/g, 'c')
+    // remove spaces and special characters
+    .replace(/[^a-z0-9]/g, '')
+    // remove trailing 's' if any (plural normalization)
+    .replace(/s$/, '');
 }
 
 // ========================================================
@@ -261,23 +319,47 @@ async function fetchCharacterFromSupabase(username) {
           });
         }
 
-        // Formater les passifs (séparés par des retours à la ligne ou puces) en cherchant l'effet réel dans allTalents
+        // Formater les passifs (séparés par des retours à la ligne ou puces) en cherchant l'effet réel dans allTalents ou allEspritCompetences avec normalisation
         const passifStr = userRow["Passif"] || userRow["Passif "] || "";
         const talents = passifStr.split('\n').map(p => p.replace(/[•\-\*]/g, '').trim()).filter(Boolean).map(nom => {
-          const matchedTalent = allTalents.find(t => t.nom.toLowerCase().trim() === nom.toLowerCase().trim());
+          const normNom = normalizeName(nom);
+          const matchedTalent = allTalents.find(t => normalizeName(t.nom) === normNom);
+
+          let effets = 'Effet du passif naturel.';
+          if (matchedTalent) {
+            effets = matchedTalent.effets || matchedTalent.effet || effets;
+          } else {
+            const matchedEspritComp = allEspritCompetences.find(c => normalizeName(c.nom) === normNom);
+            if (matchedEspritComp) {
+              effets = matchedEspritComp.effet || effets;
+            }
+          }
+
           return {
             nom: nom,
-            effets: matchedTalent ? matchedTalent.effets : 'Effet du passif naturel.'
+            effets: effets
           };
         });
 
-        // Formater les compétences
+        // Formater les compétences avec normalisation
         const compStr = userRow["Compétences"] || userRow["Compétences "] || "";
         const skills = compStr.split('\n').map(s => s.replace(/[•\-\*]/g, '').trim()).filter(Boolean).map(nom => {
-          const matchedComp = allCompetences.find(c => c.compétence.toLowerCase().trim() === nom.toLowerCase().trim());
+          const normNom = normalizeName(nom);
+          const matchedComp = allCompetences.find(c => normalizeName(c.compétence) === normNom);
+
+          let effet = 'Effet de compétence de combat.';
+          if (matchedComp) {
+            effet = matchedComp.effet || matchedComp.effets || effet;
+          } else {
+            const matchedEspritComp = allEspritCompetences.find(c => normalizeName(c.nom) === normNom);
+            if (matchedEspritComp) {
+              effet = matchedEspritComp.effet || effet;
+            }
+          }
+
           return {
             compétence: nom,
-            effet: matchedComp ? matchedComp.effet : 'Effet de compétence de combat.'
+            effet: effet
           };
         });
 
@@ -286,7 +368,7 @@ async function fetchCharacterFromSupabase(username) {
         const inventory = invStr.split('\n').map(i => i.replace(/[•\-\*]/g, '').trim()).filter(Boolean).map(nom => {
           const lowerNom = nom.toLowerCase();
           const isEquip = lowerNom.includes('épée') || lowerNom.includes('plastron') || lowerNom.includes('bottes') || lowerNom.includes('anneau') || lowerNom.includes('dague') || lowerNom.includes('bouclier') || lowerNom.includes('katana') || lowerNom.includes('arc') || lowerNom.includes('bâton') || lowerNom.includes('hache') || lowerNom.includes('écu');
-          
+
           let statDesc = "Objet consommable de l'aventure.";
           if (isEquip) {
             if (lowerNom.includes('épée') || lowerNom.includes('katana') || lowerNom.includes('hache')) statDesc = '+3 Puissance (DEG)';
@@ -521,7 +603,7 @@ function updatePactCard(pact) {
   document.getElementById('pact-emoji').textContent = pact.emoji;
   document.getElementById('pact-name').textContent = pact.nom;
   document.getElementById('pact-intro').textContent = `« ${pact.intro} »`;
-  document.getElementById('pact-unique-desc').innerHTML = `<strong>${pact.uniqueName} :</strong> ${pact.uniqueDesc}`;
+  document.getElementById('pact-unique-desc').innerHTML = `<strong>${pact.uniqueName} :</strong> ${makeStatusInteractive(pact.uniqueDesc)}`;
 
   // Afficher les choix d'évolutions choisis
   const evolutionsList = document.getElementById('pact-evolutions-list');
@@ -559,7 +641,7 @@ function renderTalents(talents) {
     item.innerHTML = `
       <div class="deck-item__info">
         <span class="deck-item__name">${name}</span>
-        <span class="deck-item__effect">${effet}</span>
+        <span class="deck-item__effect">${makeStatusInteractive(effet)}</span>
       </div>
     `;
 
@@ -583,7 +665,7 @@ function renderSkills(skills) {
     item.innerHTML = `
       <div class="deck-item__info">
         <span class="deck-item__name">${name}</span>
-        <span class="deck-item__effect">${effet}</span>
+        <span class="deck-item__effect">${makeStatusInteractive(effet)}</span>
       </div>
     `;
 
@@ -610,8 +692,8 @@ function renderInventory(inventory) {
 
     // Si c'est un équipement, la description/stat modifiée sera colorée spécifiquement
     const statLine = isEquip
-      ? `<span class="inventory-item__stat">${item.stat}</span>`
-      : `<span class="deck-item__effect">${item.stat}</span>`;
+      ? `<span class="inventory-item__stat">${makeStatusInteractive(item.stat)}</span>`
+      : `<span class="deck-item__effect">${makeStatusInteractive(item.stat)}</span>`;
 
     itemEl.innerHTML = `
       <div class="inventory-item__info">
@@ -629,13 +711,90 @@ function transitionSection(fromEl, toEl, toDisplay = 'block') {
   if (!fromEl || !toEl) return;
   fromEl.classList.add('fade-out-section');
   fromEl.classList.remove('fade-in-section');
-  
+
   setTimeout(() => {
     fromEl.style.display = 'none';
     fromEl.classList.remove('fade-out-section');
-    
+
     toEl.style.display = toDisplay;
     toEl.classList.add('fade-in-section');
   }, 350);
 }
+
+function makeStatusInteractive(text) {
+  if (!text) return '';
+  let formatted = text;
+
+  const sortedStatus = [...allStatusEffects].sort((a, b) => b.Nom.length - a.Nom.length);
+
+  sortedStatus.forEach(status => {
+    const statusName = status.Nom;
+    const regex = new RegExp('(?:^|[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ])(' + statusName + 's?)(?![a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ])', 'gi');
+
+    formatted = formatted.replace(regex, (match, p1) => {
+      const index = match.indexOf(p1);
+      const prefix = match.substring(0, index);
+      const suffix = match.substring(index + p1.length);
+      const normStatus = normalizeName(statusName);
+      return `${prefix}<span class="interactive-status status-${normStatus}" data-status="${statusName}">${p1}</span>${suffix}`;
+    });
+  });
+
+  return formatted;
+}
+
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('.interactive-status');
+  if (!target) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  const statusName = target.getAttribute('data-status');
+  if (!statusName) return;
+
+  const statusInfo = allStatusEffects.find(s => normalizeName(s.Nom) === normalizeName(statusName));
+  if (!statusInfo) return;
+
+  const leftContainer = document.getElementById('passifs-sidebar-container');
+  const rightContainer = document.getElementById('competences-sidebar-container');
+  if (!leftContainer || !rightContainer) return;
+
+  const isLeftClick = e.clientX < window.innerWidth / 2;
+  const targetContainer = isLeftClick ? leftContainer : rightContainer;
+  const normName = normalizeName(statusInfo.Nom);
+
+  leftContainer.innerHTML = '';
+  rightContainer.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = `sidebar-card status-${normName}`;
+  card.setAttribute('data-type', 'status');
+  card.setAttribute('data-norm-name', normName);
+
+  card.innerHTML = `
+    <button class="sidebar-card__close" aria-label="Fermer">&times;</button>
+    <div class="sidebar-card__header">
+      <span class="sidebar-card__title">${statusInfo.Nom}</span>
+      <span class="sidebar-card__duration">${statusInfo.durée || 'Spécial'}</span>
+    </div>
+    <div class="sidebar-card__type-row">
+      <span class="sidebar-card__type-badge" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff;">Altération d'État</span>
+    </div>
+    <div class="sidebar-card__effect">${statusInfo.Effets}</div>
+  `;
+
+  const closeBtn = card.querySelector('.sidebar-card__close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      card.classList.add('fade-out');
+      const removeCard = () => card.remove();
+      card.addEventListener('transitionend', removeCard);
+      setTimeout(removeCard, 450);
+    });
+  }
+
+  targetContainer.appendChild(card);
+});
 

@@ -1,0 +1,52 @@
+[
+  {
+    "Nom": "Poison",
+    "Effets": "Perte de 5 pv par tour",
+    "durée": "Jusqu'à en être soigné"
+  },
+  {
+    "Nom": "Brûlure",
+    "Effets": "Perte de 2 pv par tour, et les dégâts subis sont augmentés de 5",
+    "durée": "3 tours"
+  },
+  {
+    "Nom": "Lenteur",
+    "Effets": "Vitesse réduite de moitié",
+    "durée": "4 tours"
+  },
+  {
+    "Nom": "Confusion",
+    "Effets": "À chaque fois que vous attaquez, lancez un dé : sur 1-2-3 l'attaque cible un allié aléatoire, sur 4-5-6 l'attaque cible un ennemi",
+    "durée": "3 tours"
+  },
+  {
+    "Nom": "Affaiblissement",
+    "Effets": "Dégâts des attaques et des compétences réduits de moitié",
+    "durée": "3 tours"
+  },
+  {
+    "Nom": "Terreur",
+    "Effets": "Impossible d'effectuer une attaque de base",
+    "durée": "3 tours"
+  },
+  {
+    "Nom": "Hémorragie",
+    "Effets": "Perte de 2 PV à la fin de chaque tour et soins reçus réduits de moitié",
+    "durée": "jusqu'à en être soigné"
+  },
+  {
+    "Nom": "Choc",
+    "Effets": "Impossible d'utiliser des compétences",
+    "durée": "1 tour"
+  },
+  {
+    "Nom": "Marque",
+    "Effets": "La prochaine attaque subie inflige 10 dégâts supplémentaires",
+    "durée": "jusqu'à prendre des dégats"
+  },
+  {
+    "Nom": "Bouclier",
+    "Effets": "La prochaine attaque subie n'inflige aucun dégât",
+    "durée": "Jusqu'à la prochaine attaque subie"
+  }
+]

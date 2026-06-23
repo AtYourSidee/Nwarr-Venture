@@ -29,6 +29,7 @@ let allCompetences = [];
 let allTalents = [];
 let allEspritCompetences = [];
 let allEsprits = [];
+let allStatusEffects = [];
 let activeSpiritId = null;
 
 // ========================================
@@ -189,6 +190,19 @@ async function loadCompetences() {
       return;
     }
 
+    // Charger les altérations d'états
+    try {
+      let statusRes = await fetch('data/altérations_d_etats.json');
+      if (!statusRes.ok) {
+        statusRes = await fetch('altérations_d_etats.json');
+      }
+      if (statusRes.ok) {
+        allStatusEffects = await statusRes.json();
+      }
+    } catch (statusErr) {
+      console.warn('Impossible de charger les altérations d\'états:', statusErr);
+    }
+
     renderCards(allCompetences);
     if (allTalents.length > 0) {
       renderTalents(allTalents);
@@ -284,12 +298,12 @@ function createCard(competence) {
 
   let statutHTML = '';
   if (statut && statut !== '/' && statut !== '-') {
-    statutHTML = `<div class="arcane-card__status"><strong>Statut:</strong> ${statut}</div>`;
+    statutHTML = `<div class="arcane-card__status"><strong>Statut:</strong> ${makeStatusInteractive(statut)}</div>`;
   }
 
   let ccHTML = '';
   if (contreCoup && contreCoup !== '/' && contreCoup !== '-') {
-    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${contreCoup}</div>`;
+    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${makeStatusInteractive(contreCoup)}</div>`;
   }
 
   // Construire le HTML de la carte
@@ -303,7 +317,7 @@ function createCard(competence) {
 
     <div class="arcane-card__content">
       <div class="arcane-card__footer">
-        <div class="arcane-card__description">${effet}</div>
+        <div class="arcane-card__description">${makeStatusInteractive(effet)}</div>
         ${statutHTML}
         ${ccHTML}
         <div class="arcane-card__meta">
@@ -707,7 +721,7 @@ function createTalentCard(talent) {
       <div class="talent-card__title">${capitalize(talent.nom.trim())}</div>
       <span class="talent-card__icon">${emoji}</span>
     </div>
-    <div class="talent-card__effect">${talent.effets}</div>
+    <div class="talent-card__effect">${makeStatusInteractive(talent.effets)}</div>
   `;
 
   return card;
@@ -1209,7 +1223,7 @@ function generateSidebarCardHTML(details) {
 
   let ccHTML = '';
   if (details.contreCoup && details.contreCoup !== '/' && details.contreCoup !== '-') {
-    ccHTML = `<div class="sidebar-card__cc"><strong>Contre-coup :</strong> ${details.contreCoup}</div>`;
+    ccHTML = `<div class="sidebar-card__cc"><strong>Contre-coup :</strong> ${makeStatusInteractive(details.contreCoup)}</div>`;
   }
 
   let degatsHTML = '';
@@ -1226,7 +1240,7 @@ function generateSidebarCardHTML(details) {
     <div class="sidebar-card__type-row">
       <span class="sidebar-card__type-badge ${details.type}">${typeEmoji} ${capitalize(details.type)}</span>
     </div>
-    <div class="sidebar-card__effect">${details.effet}</div>
+    <div class="sidebar-card__effect">${makeStatusInteractive(details.effet)}</div>
     <div class="sidebar-card__meta">
       ${degatsHTML}
     </div>
@@ -1328,26 +1342,39 @@ function performSearch(query) {
     const cleanIntro = cleanStringForSearch(esprit.intro);
     const cleanCapNom = cleanStringForSearch(esprit.capacite_nom);
     const cleanCapEffet = cleanStringForSearch(esprit.capacite_effet);
-    
-    let match = cleanNom.includes(cleanQuery) || 
-                cleanIntro.includes(cleanQuery) || 
-                cleanCapNom.includes(cleanQuery) || 
-                cleanCapEffet.includes(cleanQuery) ||
-                cleanStringForSearch(esprit.stats_depart).includes(cleanQuery) ||
-                cleanStringForSearch(esprit.competence_depart).includes(cleanQuery) ||
-                cleanStringForSearch(esprit.passive_depart).includes(cleanQuery);
-    
+
+    let match = cleanNom.includes(cleanQuery) ||
+      cleanIntro.includes(cleanQuery) ||
+      cleanCapNom.includes(cleanQuery) ||
+      cleanCapEffet.includes(cleanQuery) ||
+      cleanStringForSearch(esprit.stats_depart).includes(cleanQuery) ||
+      cleanStringForSearch(esprit.competence_depart).includes(cleanQuery) ||
+      cleanStringForSearch(esprit.passive_depart).includes(cleanQuery);
+
     if (!match && Array.isArray(esprit.evolutions)) {
-      match = esprit.evolutions.some(evo => 
+      match = esprit.evolutions.some(evo =>
         cleanStringForSearch(evo.stats).includes(cleanQuery) ||
         cleanStringForSearch(evo.competence).includes(cleanQuery) ||
         cleanStringForSearch(evo.passive).includes(cleanQuery)
       );
     }
-    
+
     if (match) {
       matchedEsprits.push({
         data: esprit,
+        score: cleanNom.startsWith(cleanQuery) ? 2 : 1
+      });
+    }
+  });
+
+  // 5. Recherche dans les altérations d'états
+  const matchedStatus = [];
+  allStatusEffects.forEach(status => {
+    const cleanNom = cleanStringForSearch(status.Nom);
+    const cleanEffet = cleanStringForSearch(status.Effets);
+    if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery)) {
+      matchedStatus.push({
+        data: status,
         score: cleanNom.startsWith(cleanQuery) ? 2 : 1
       });
     }
@@ -1358,12 +1385,14 @@ function performSearch(query) {
   matchedCompetences.sort((a, b) => b.score - a.score);
   matchedEspritCompetences.sort((a, b) => b.score - a.score);
   matchedEsprits.sort((a, b) => b.score - a.score);
+  matchedStatus.sort((a, b) => b.score - a.score);
 
   displaySearchResults({
     talents: matchedTalents.map(r => r.data),
     competences: matchedCompetences.map(r => r.data),
     espritCompetences: matchedEspritCompetences.map(r => r.data),
-    esprits: matchedEsprits.map(r => r.data)
+    esprits: matchedEsprits.map(r => r.data),
+    status: matchedStatus.map(r => r.data)
   }, query);
 }
 
@@ -1377,16 +1406,17 @@ function displaySearchResults(groupedResults, query) {
   resultsSection.style.display = 'block';
   toggleDefaultSections(false);
 
-  const totalCount = groupedResults.talents.length + 
-                     groupedResults.competences.length + 
-                     groupedResults.espritCompetences.length + 
-                     groupedResults.esprits.length;
+  const totalCount = groupedResults.talents.length +
+    groupedResults.competences.length +
+    groupedResults.espritCompetences.length +
+    groupedResults.esprits.length +
+    groupedResults.status.length;
 
   if (resultsCountEl) resultsCountEl.textContent = totalCount;
 
   if (totalCount === 0) {
     if (noResultsEl) noResultsEl.style.display = 'block';
-    ['talents', 'competences', 'esprit-competences', 'esprits'].forEach(cat => {
+    ['talents', 'competences', 'esprit-competences', 'esprits', 'status'].forEach(cat => {
       const container = document.getElementById(`search-results-${cat}-container`);
       if (container) container.style.display = 'none';
     });
@@ -1400,6 +1430,7 @@ function displaySearchResults(groupedResults, query) {
   renderCategoryResults('competences', groupedResults.competences, (data) => createCompetenceSearchResultCard(data, query));
   renderCategoryResults('esprit-competences', groupedResults.espritCompetences, (data) => createEspritSearchResultCard(data, query));
   renderCategoryResults('esprits', groupedResults.esprits, (data) => createEspritCard(data));
+  renderCategoryResults('status', groupedResults.status, (data) => createStatusSearchResultCard(data, query));
 }
 
 function renderCategoryResults(categoryId, items, cardCreator) {
@@ -1437,7 +1468,7 @@ function resetSearch() {
   const resultsSection = document.getElementById('search-results-section');
   if (resultsSection) resultsSection.style.display = 'none';
 
-  const categories = ['talents', 'competences', 'esprit-competences', 'esprits'];
+  const categories = ['talents', 'competences', 'esprit-competences', 'esprits', 'status'];
   categories.forEach(cat => {
     const container = document.getElementById(`search-results-${cat}-container`);
     const grid = document.getElementById(`search-results-${cat}-grid`);
@@ -1470,21 +1501,21 @@ function toggleDefaultSections(show) {
 
 function highlightText(text, query) {
   if (!text || !query) return text;
-  
+
   const cleanText = cleanStringForSearch(text);
   const cleanQuery = cleanStringForSearch(query);
-  
+
   if (!cleanText.includes(cleanQuery)) return text;
-  
+
   let result = '';
   let lastIndex = 0;
   let index = cleanText.indexOf(cleanQuery);
-  
+
   while (index !== -1) {
     result += text.substring(lastIndex, index);
     const match = text.substring(index, index + query.length);
     result += `<mark class="search-highlight">${match}</mark>`;
-    
+
     lastIndex = index + query.length;
     index = cleanText.indexOf(cleanQuery, lastIndex);
   }
@@ -1500,7 +1531,7 @@ function createTalentSearchResultCard(talent, query) {
   const emoji = getTalentEmoji(talent.nom);
 
   const highlightedName = highlightText(capitalize(talent.nom.trim()), query);
-  const highlightedEffect = highlightText(talent.effets, query);
+  const highlightedEffect = makeStatusInteractive(highlightText(talent.effets, query));
 
   card.innerHTML = `
     <div class="talent-card__header">
@@ -1521,19 +1552,19 @@ function createCompetenceSearchResultCard(comp, query) {
   const emoji = typeEmojis[type] || '⚡';
   const cout = comp["Point d'utilisation"] || comp.cout || 0;
   const highlightedName = highlightText(capitalize(comp.compétence), query);
-  const highlightedEffect = highlightText(comp.effet || 'Aucun effet spécifié', query);
+  const highlightedEffect = makeStatusInteractive(highlightText(comp.effet || 'Aucun effet spécifié', query));
   const degats = comp.dégats || '-';
   const statut = comp.statut || comp.statu || '';
   const contreCoup = comp['contre coup'] || '';
 
   let statutHTML = '';
   if (statut && statut !== '/' && statut !== '-') {
-    statutHTML = `<div class="arcane-card__status"><strong>Statut:</strong> ${highlightText(statut, query)}</div>`;
+    statutHTML = `<div class="arcane-card__status"><strong>Statut:</strong> ${makeStatusInteractive(highlightText(statut, query))}</div>`;
   }
 
   let ccHTML = '';
   if (contreCoup && contreCoup !== '/' && contreCoup !== '-') {
-    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${highlightText(contreCoup, query)}</div>`;
+    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${makeStatusInteractive(highlightText(contreCoup, query))}</div>`;
   }
 
   card.innerHTML = `
@@ -1566,7 +1597,7 @@ function createEspritSearchResultCard(comp, query) {
   const emoji = typeEmojis[type] || '🔮';
   const cout = comp.pu || '/';
   const highlightedName = highlightText(capitalize(comp.nom), query);
-  const highlightedEffect = highlightText(comp.effet || 'Aucun effet spécifié', query);
+  const highlightedEffect = makeStatusInteractive(highlightText(comp.effet || 'Aucun effet spécifié', query));
   const degats = comp.degats || '/';
   const contreCoup = comp.contreCoup || '';
   const esprit = comp.esprit || '';
@@ -1574,7 +1605,7 @@ function createEspritSearchResultCard(comp, query) {
 
   let ccHTML = '';
   if (contreCoup && contreCoup !== '/' && contreCoup !== '-') {
-    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${highlightText(contreCoup, query)}</div>`;
+    ccHTML = `<div class="arcane-card__cc"><strong>Contre-coup:</strong> ${makeStatusInteractive(highlightText(contreCoup, query))}</div>`;
   }
 
   const genreText = genre === 'passif' ? 'Passif' : `${cout} PU`;
@@ -1603,3 +1634,134 @@ function createEspritSearchResultCard(comp, query) {
   `;
   return card;
 }
+
+function createStatusSearchResultCard(status, query) {
+  const card = document.createElement('div');
+  const type = getStatusType(status.Nom);
+  card.className = 'talent-card';
+  card.setAttribute('data-type', type);
+  card.style.cursor = 'default';
+
+  const emoji = getStatusEmoji(status.Nom);
+  const highlightedName = highlightText(capitalize(status.Nom), query);
+  const highlightedEffect = highlightText(status.Effets || 'Aucun effet spécifié', query);
+  const duree = status.durée || 'Spécial';
+
+  card.innerHTML = `
+    <div class="talent-card__header">
+      <div class="talent-card__title">${highlightedName}</div>
+      <span class="talent-card__icon">${emoji}</span>
+    </div>
+    <div class="talent-card__effect" style="margin-top: 10px; line-height: 1.5;">
+      ${highlightedEffect}
+      <span style="font-size: 0.8rem; opacity: 0.7; display: block; margin-top: 8px; font-weight: 600; color: var(--star-gold);">
+        Durée : ${duree}
+      </span>
+    </div>
+  `;
+
+  return card;
+}
+
+function getStatusType(nom) {
+  const lowerNom = nom.toLowerCase().trim();
+  if (lowerNom.includes('poison')) return 'soutien'; // green
+  if (lowerNom.includes('brulure') || lowerNom.includes('terror') || lowerNom.includes('hemorragie') || lowerNom.includes('marque')) return 'attaque'; // red
+  if (lowerNom.includes('lenteur') || lowerNom.includes('confusion')) return 'magie'; // blue
+  if (lowerNom.includes('affaiblissement') || lowerNom.includes('choc') || lowerNom.includes('bouclier')) return 'défense'; // gold
+  return 'soutien';
+}
+
+function getStatusEmoji(nom) {
+  const lowerNom = nom.toLowerCase().trim();
+  if (lowerNom.includes('poison')) return '🤢';
+  if (lowerNom.includes('brulure')) return '🔥';
+  if (lowerNom.includes('lenteur')) return '⏳';
+  if (lowerNom.includes('confusion')) return '🌀';
+  if (lowerNom.includes('affaiblissement')) return '🩹';
+  if (lowerNom.includes('terreur')) return '😱';
+  if (lowerNom.includes('hemorragie')) return '🩸';
+  if (lowerNom.includes('choc')) return '⚡';
+  if (lowerNom.includes('marque')) return '🎯';
+  if (lowerNom.includes('bouclier')) return '🛡️';
+  return '⚠️';
+}
+
+function openStatusSidebar(statusInfo) {
+  const leftContainer = document.getElementById('passifs-sidebar-container');
+  const rightContainer = document.getElementById('competences-sidebar-container');
+  if (!leftContainer || !rightContainer) return;
+
+  const normName = normalizeName(statusInfo.Nom);
+
+  leftContainer.innerHTML = '';
+  rightContainer.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = `sidebar-card status-${normName}`;
+  card.setAttribute('data-type', 'status');
+  card.setAttribute('data-norm-name', normName);
+
+  card.innerHTML = `
+    <button class="sidebar-card__close" aria-label="Fermer">&times;</button>
+    <div class="sidebar-card__header">
+      <span class="sidebar-card__title">${statusInfo.Nom}</span>
+      <span class="sidebar-card__duration">${statusInfo.durée || 'Spécial'}</span>
+    </div>
+    <div class="sidebar-card__type-row">
+      <span class="sidebar-card__type-badge" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff;">Altération d'État</span>
+    </div>
+    <div class="sidebar-card__effect">${statusInfo.Effets}</div>
+  `;
+
+  const closeBtn = card.querySelector('.sidebar-card__close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      card.classList.add('fade-out');
+      const removeCard = () => card.remove();
+      card.addEventListener('transitionend', removeCard);
+      setTimeout(removeCard, 450);
+    });
+  }
+
+  leftContainer.appendChild(card);
+}
+
+function makeStatusInteractive(text) {
+  if (!text) return '';
+  let formatted = text;
+
+  const sortedStatus = [...allStatusEffects].sort((a, b) => b.Nom.length - a.Nom.length);
+
+  sortedStatus.forEach(status => {
+    const statusName = status.Nom;
+    const regex = new RegExp('(?:^|[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ])(' + statusName + 's?)(?![a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ])', 'gi');
+
+    formatted = formatted.replace(regex, (match, p1) => {
+      const index = match.indexOf(p1);
+      const prefix = match.substring(0, index);
+      const suffix = match.substring(index + p1.length);
+      const normStatus = normalizeName(statusName);
+      return `${prefix}<span class="interactive-status status-${normStatus}" data-status="${statusName}">${p1}</span>${suffix}`;
+    });
+  });
+
+  return formatted;
+}
+
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('.interactive-status');
+  if (!target) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  const statusName = target.getAttribute('data-status');
+  if (!statusName) return;
+
+  const statusInfo = allStatusEffects.find(s => normalizeName(s.Nom) === normalizeName(statusName));
+  if (statusInfo) {
+    openStatusSidebar(statusInfo);
+  }
+});
