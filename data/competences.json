@@ -1,0 +1,1098 @@
+{
+    "compétences commune": [
+        {
+            "compétence": "Attaque sournoise",
+            "type": "attaque",
+            "Point d'utilisation": 3,
+            "effet": "Inflige votre puissance +3, +5 si la cible est sous altérations",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Bénédiction martiale",
+            "type": "soutien",
+            "Point d'utilisation": 1,
+            "effet": "Un allié gagne +5 de puissance pendant 2 tours",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Brasier",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de feu",
+            "contre coup": "/",
+            "dégats": "magique",
+            "statut": ""
+        },
+        {
+            "compétence": "Burst d'orion",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +5",
+            "contre coup": "/",
+            "dégats": "magique",
+            "statut": ""
+        },
+        {
+            "compétence": "Ciblage",
+            "type": "soutien",
+            "Point d'utilisation": 2,
+            "effet": "Placez la marque sur tous les ennemis",
+            "statut": "Priorité",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Côtes épineuses",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Vous devenez la cible de la prochaine attaque ennemi",
+            "statut": "Priorité/hémorragie",
+            "contre coup": "Vous appliquez hémorragie lorsque vous êtes touché",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Coup assommant",
+            "type": "attaque",
+            "Point d'utilisation": 3,
+            "effet": "Inflige votre puissance +2",
+            "statut": "Lenteur",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Coup critique",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +2",
+            "statut": "Terreur",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Coup de grâce ",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Infligez 15 dégâts, augmentez de 10 si la cible a moins de la moitié de ses pv",
+            "statut": "/",
+            "contre coup": "Vous gagnez +3 de puisance si vous éliminez un ennemi",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Défense d'orion",
+            "type": "soutien",
+            "Point d'utilisation": 2,
+            "effet": "Ciblez un allié qui n'as pas de bouclier, il en gagne un",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Derrière moi",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Choissisez un allié, durant 3 tours vous subissez la moitié des dégâts qu'il reçoit à sa place",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Double entailles",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Faites une attaque de base, suivi d'une deuxième a -5 de puissance",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Entaille profonde",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +2",
+            "statut": "Hémorragie",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Exécution",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance -3, s'il reste 10 pv ou moins à la cible après l'attaque, tuez la",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Fantasia",
+            "type": "soutien",
+            "Point d'utilisation": 3,
+            "effet": "Guérit vous ou un allié d'une altération d'état",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Frappe glorieuse",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance, puis vous soigne de la moitié des dégâts infligés",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Frappe puissante",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +5",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Frappe puissante multi",
+            "type": "attaque",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +5 a tous les ennemis",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Garde renforcée",
+            "type": "défense",
+            "Point d'utilisation": 3,
+            "effet": "Vous choisissez vous ou un allié, durant 3 tours les dégâts qu'il reçoit sont réduits de 5",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Glacier",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de glace",
+            "contre coup": "/",
+            "dégats": "magique",
+            "statut": ""
+        },
+        {
+            "compétence": "Hachoir vivant",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Si vous avez subi des dégâts ce tour, infligez +1 dégât et la moitié de vos pv restants",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Hana ni Naté",
+            "type": "soutien",
+            "Point d'utilisation": 2,
+            "effet": "Empoisonne un ennemi, puis guérit un allié du poison s'il l'avait",
+            "statut": "Poison",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Hâte",
+            "type": "soutien",
+            "Point d'utilisation": 1,
+            "effet": "Un allié gagne +5 de vitesse pendant 2 tours",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "La piété",
+            "type": "soutien",
+            "Point d'utilisation": 3,
+            "effet": "Inflige votre puissance +5 en dégâts de lumière, puis soigne un allié de la moitié des dégâts infligés",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "magique"
+        },
+        {
+            "compétence": "Light",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de lumière",
+            "contre coup": "/",
+            "dégats": "magique",
+            "statut": ""
+        },
+        {
+            "compétence": "Mur de feu",
+            "type": "défense",
+            "Point d'utilisation": 1,
+            "effet": "Infligez votre puissance -5, vous érigez un mur de feu durant 5 tours, les ennemis qui attaquent votre équipe subissent 3 dégâts de feu",
+            "statut": "Brûlure",
+            "contre coup": "Votre équipe applique brûlure lorsqu'elle est touchée",
+            "dégats": "magique"
+        },
+        {
+            "compétence": "Muraille de fer",
+            "type": "défense",
+            "Point d'utilisation": 1,
+            "effet": "Vous devenez résistant aux dégâts physiques durant 3 tours",
+            "statut": "/",
+            "contre coup": "Lenteur",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Protection magique",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Choisissez entre magie pure ou un élément, votre équipe deviens résistante à votre choix durant 3 tours",
+            "statut": "/",
+            "contre coup": "Vous ne pouvez pas agir au prochain tour",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Provoc",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance -3, puis vous devenez la cible des attaques ennemies durant 3 tours",
+            "statut": "Priorité",
+            "contre coup": "Vous gagnez +2 de puissance",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Rayon magique",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +3 à tous les ennemis",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "magique"
+        },
+        {
+            "compétence": "Riposte lente",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Si vous avez subi des dégâts ce tour, vous infligez des dégâts équivalents aux pv que vous avez perdu",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "physique"
+        },
+        {
+            "compétence": "Rock solid",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de terre",
+            "statut": "Lenteur",
+            "contre coup": "/",
+            "dégats": "magique"
+        },
+        {
+            "compétence": "Sacrifice",
+            "type": "défense",
+            "Point d'utilisation": 2,
+            "effet": "Gagnez +5 pv, puis vous devenez la cible des attaques ennemies durant 3 tours",
+            "statut": "Priorité",
+            "contre coup": "Vous devenez faible à la magie.",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Secours",
+            "type": "soutien",
+            "Point d'utilisation": 1,
+            "effet": "Durant les 3 prochains tours, la première fois que l'allié ciblé devrait mourir, il résiste à 1 pv",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Sentence d'orion",
+            "type": "soutien",
+            "Point d'utilisation": 2,
+            "effet": "Applique affaiblissement à tous les ennemis",
+            "contre coup": "/",
+            "dégats": "/",
+            "statut": ""
+        },
+        {
+            "compétence": "Shadow",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de ténèbre",
+            "contre coup": "Folie (5%)",
+            "dégats": "magique",
+            "statut": ""
+        },
+        {
+            "compétence": "Soins légers",
+            "type": "soutien",
+            "Point d'utilisation": 3,
+            "effet": "Soigne 5 pv + la moitié de votre puissance",
+            "statut": "/",
+            "contre coup": "/",
+            "dégats": "/"
+        },
+        {
+            "compétence": "Thunder",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de foudre",
+            "contre coup": "/",
+            "dégats": "magique",
+            "statut": ""
+        },
+        {
+            "compétence": "Unity blast",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige votre puissance +2",
+            "statut": "Marque",
+            "contre coup": "/",
+            "dégats": "magique"
+        },
+        {
+            "compétence": "Wind",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts de vent",
+            "statut": "Priorité",
+            "contre coup": "/",
+            "dégats": "magique"
+        },
+        {
+            "compétence": "Water",
+            "type": "magie",
+            "Point d'utilisation": 2,
+            "effet": "Inflige 10 dégâts d'eau, puis vous soigne de 5 pv",
+            "dégats": "magique ",
+            "contre coup": "",
+            "statut": ""
+        }
+    ],
+    "compétences d'esprit": [
+        {
+            "Column1": "Compétences",
+            "Column2": "type",
+            "Column3": "PU",
+            "Column4": "Effets",
+            "Column5": "Statut",
+            "Column6": "Contre coup",
+            "Column7": "dégats",
+            "Column8": "esprits",
+            "0": "genre",
+            "Column10": "lvl du pacte"
+        },
+        {
+            "Column1": "Ange de la mort",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "S'il reste 10% pv ou moins à un ennemi après que vous l'ayez attaqué, vous le tuez",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "fourbe",
+            "0": "passif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Apprentissage magique",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Si vous avez une affinité élémentaire, vous devenez résistant à cet élément",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "etranger",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Aube ardente",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Vos compétences de soins gagnent 1 pu",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "veuve",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Canon atomique d\"orion",
+            "Column2": "attaque",
+            "Column3": 1,
+            "Column4": "Inflige 25 dégâts magique à tous les ennemis et leur donne une faiblesse magique",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "magique",
+            "Column8": "etranger",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Codex interdit",
+            "Column2": "attaque",
+            "Column3": 1,
+            "Column4": "Inflige 25 dégâts magiques à un ennemi",
+            "Column5": "Confusion",
+            "Column6": "/",
+            "Column7": "magique",
+            "Column8": "etranger",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Continue le combat",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "La première fois qu'un allié tombe sous 50% pv, vous lui faites gagner un bouclier",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "veuve",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Contre attaque",
+            "Column2": "défense",
+            "Column3": "/",
+            "Column4": "Une fois par tour, lorsqu'un ennemi vous attaque, vous lui infligez votre puissance",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "gardien",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Coup bas",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance +10 si la cible a une altération",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique ",
+            "Column8": "fourbe",
+            "0": "actif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Coup royal",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance +5, si vous brisez une marque, les dégâts de la marque sont augmentés de 10",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "conquérant",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Curiosité infinie",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Au début du combat vous obtenez une info sur la faiblesse de l'ennemi si elle est magique",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "etranger",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Danse de la lune",
+            "Column2": "soutien",
+            "Column3": 2,
+            "Column4": "Un allié ciblé peut faire 2 actions ce tour",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "danseuse",
+            "0": "actif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Danse du démon",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Vous faites 3 attaques de base, puis toute l'équipe gagne +5/+5/+5",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique ",
+            "Column8": "danseuse",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Danse de feu",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Vos attaques de base infligent +5 dégâts de feu et peuvent appliquer une brûlure",
+            "Column5": "Brûlure 15%",
+            "Column6": "/",
+            "Column7": "magique",
+            "Column8": "danseuse",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Danse du soleil",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Vous infligez votre puissance + 7, puis votre équipe gagne +0/+0/+10",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "danseuse",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Danse envoûtante",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Votre première attaque de base en combat applique lenteur",
+            "Column5": "Lenteur ",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "danseuse",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Derrière toi",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "Au début du combat, si vous êtes le premier à agir, votre première attaque de base applique choc",
+            "Column5": "Choc",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "fourbe",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Fantasia supérieure",
+            "Column2": "soutien",
+            "Column3": 2,
+            "Column4": "Soigne toutes les altérations d'états de toute l'équipe",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "veuve",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Fontaine de vie",
+            "Column2": "soutien",
+            "Column3": 1,
+            "Column4": "Soigne des pv équivalent à votre puissance, puis jusqu'à la fin du combat votre équipe se soigne de 10 pv à la fin de chaque tour",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "veuve",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Forteresse vivante",
+            "Column2": "défense",
+            "Column3": 2,
+            "Column4": "Si vous n'avez pas de bouclier, vous en gagnez un",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "gardien",
+            "0": "actif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Haki des rois",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "Au début du combat, vous placez une marque sur tous les ennemis",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "conquérant",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Inébranlable",
+            "Column2": "défense",
+            "Column3": "/",
+            "Column4": "Vous êtes immunisé à la terreur",
+            "Column5": "/",
+            "Column6": "/",
+            "Column8": "gardien",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "King slash",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance +10, si la cible avait un bouclier, vous l'ignorez, puis gagnez un bouclier",
+            "Column5": "/",
+            "Column6": "Gagner un bouclier",
+            "Column7": "physique",
+            "Column8": "conquérant",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "L'arabesque danse toujours",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Les buffs que vous appliquez durent 2 tours de plus",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "danseuse",
+            "0": "passif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Maître de la magie",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "Les compétences magiques de vous et vos alliés infligent 10 dégâts de plus",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "etranger",
+            "0": "passif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Mandale du titan",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Vous infligez votre puissance + la moitié de vos pv manquants",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "gardien",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Manipulation",
+            "Column2": "soutien",
+            "Column3": 3,
+            "Column4": "Place une marque sur une cible, puis place poison ou brûlure sur la même cible.",
+            "Column5": "Marque/Poison/Brûlure",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "fourbe",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Opportuniste",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "Les ennemis sous altération subissent +3 dégâts de vos attaques et compétences",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "fourbe",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Poursuite",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "Si vous affrontez plusieurs ennemis, votre puissance augmente de 5 la première fois qu'un d'entre eux meurt",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "chasseuse",
+            "0": "passif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Prédateur",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "Les dégâts de marque sont augmentés de 5 et si vous affrontez plusieurs ennemis vous marquez le plus faible",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "chasseuse",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Présence rassurante",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Au début du combat, vous soignez 5 pv à toute l'équipe",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "veuve",
+            "0": "passif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Protecteur",
+            "Column2": "défense",
+            "Column3": "/",
+            "Column4": "Les alliés gagnent +10 pv max, les ennemis qui vous attaquent subissent hémorragie",
+            "Column5": "Hémorragie",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "gardien",
+            "0": "passif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Rempart",
+            "Column2": "défense",
+            "Column3": 1,
+            "Column4": "Toute l'équipe gagne un bouclier",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "gardien",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Roi des voleurs",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "A la fin des combats et des aventures, si vous êtes toujours vivant, vous recevez plus de récompenses",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "fourbe",
+            "0": "passif",
+            "Column10": 1
+        },
+        {
+            "Column1": "Rythme endiablé",
+            "Column2": "soutien",
+            "Column3": 2,
+            "Column4": "Vous soignez 5 pv à toute l'équipe et durant 3 tours vous gagnez +0/+5/+5",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "danseuse",
+            "0": "actif",
+            "Column10": 1
+        },
+        {
+            "Column1": "Scan",
+            "Column2": "soutien",
+            "Column3": "/",
+            "Column4": "Au début du combat vous obtenez une info sur chaque ennemi",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "chasseuse",
+            "0": "passif",
+            "Column10": 1
+        },
+        {
+            "Column1": "Soins supérieurs",
+            "Column2": "soutien",
+            "Column3": 2,
+            "Column4": "Soigne 10 pv + la moitié de votre puissance à toute l'équipe",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "veuve",
+            "0": "actif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Sommation",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance +5 puis place la marque",
+            "Column5": "Marque/Priorité",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "chasseuse",
+            "0": "actif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Tir mortel",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance +15, augmente de 15 si la cible est marquée",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "chasseuse",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Tranchant d'orion",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance +5, puis si vous avez une affinité élémentaire, inflige 5 dégâts de ce type",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique/magie",
+            "Column8": "conquérant",
+            "0": "actif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Traque mortelle",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "A la fin du tour, les ennemis marqués subissent affaiblissement",
+            "Column5": "Affaiblissement",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "chasseuse",
+            "0": "passif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Triche ",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance à tous les ennemis, puis leur place une altération d'état aléatoire",
+            "Column5": "Toutes",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "fourbe",
+            "0": "actif",
+            "Column10": 4
+        },
+        {
+            "Column1": "Tri-éléments",
+            "Column2": "attaque",
+            "Column3": 2,
+            "Column4": "Inflige votre puissance puis, 5 dégâts de feu, 5 dégâts d'eau, et 5 dégâts de foudre",
+            "Column5": "5% de chance de brûlure, lenteur, choc",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "chasseuse",
+            "0": "actif",
+            "Column10": 3
+        },
+        {
+            "Column1": "Voie du sabre",
+            "Column2": "attaque",
+            "Column3": "/",
+            "Column4": "A chaque attaque de base, vous lancez un dé, si c'est 1 ou 6 vous infligez 10 dégâts de plus",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "physique",
+            "Column8": "conquérant",
+            "0": "passif",
+            "Column10": 2
+        },
+        {
+            "Column1": "Volonté inflexible",
+            "Column2": "défense",
+            "Column3": "/",
+            "Column4": "La première fois que vous tombez sous 50% pv, vous gagnez un bouclier",
+            "Column5": "/",
+            "Column6": "/",
+            "Column7": "/",
+            "Column8": "conquérant",
+            "0": "passif",
+            "Column10": 4
+        }
+    ],
+    "Talent naturel": [
+        {
+            "nom": "Affinité Eau",
+            "effets": "Vos dégâts eau infligent +5"
+        },
+        {
+            "nom": "Affinité Vent",
+            "effets": "Vos dégâts vent infligent +5"
+        },
+        {
+            "nom": "Affinité Foudre",
+            "effets": "Vos dégâts foudre infligent +5"
+        },
+        {
+            "nom": "Affinité Feu",
+            "effets": "Vos dégâts feu infligent +5"
+        },
+        {
+            "nom": "Affinité Terre",
+            "effets": "Vos dégâts terre infligent +5"
+        },
+        {
+            "nom": "Affinité Glace",
+            "effets": "Vos dégâts glace infligent +5"
+        },
+        {
+            "nom": "Affinité Lumière",
+            "effets": "Vos dégâts lumière infligent +5"
+        },
+        {
+            "nom": "Affinité Ténèbre",
+            "effets": "Vos dégâts ténèbre infligent +5"
+        },
+        {
+            "nom": "Goliath",
+            "effets": "Vous gagnez +5/+5/-5"
+        },
+        {
+            "nom": "Berserker",
+            "effets": "Lorsque vous tombez sous 50% pv, vous gagnez +0/+7/+3"
+        },
+        {
+            "nom": "Exécuteur",
+            "effets": "Vous infligez 5 dégâts de plus aux ennemis qui ont -25% pv"
+        },
+        {
+            "nom": "Opportuniste",
+            "effets": "Vous infligez 5 dégâts de plus aux ennemis qui ont une altération"
+        },
+        {
+            "nom": "Robuste",
+            "effets": "Vous gagnez +5 pv"
+        },
+        {
+            "nom": "Multi-écaille",
+            "effets": "La première attaque reçue dans chaque combat inflige 5 dégâts de moins."
+        },
+        {
+            "nom": "Survivant",
+            "effets": "Lorsque vous tombez sous 25% pv, vous gagnez un bouclier"
+        },
+        {
+            "nom": "Katchow",
+            "effets": "Vous gagnez +5 vitesse"
+        },
+        {
+            "nom": "Éclair jaune de l'empire Nwaar",
+            "effets": "Durant les 3 premiers tours, vous gagnez +10 de vitesse, puis vous avez -5 de vitesse pour le reste du combat"
+        },
+        {
+            "nom": "Leader née",
+            "effets": "Tant que vous êtes en vie, les alliés gagnent +2/+1/+1"
+        },
+        {
+            "nom": "Enfant de l'eau",
+            "effets": "Vous gagnez une résistance à l'eau"
+        },
+        {
+            "nom": "Enfant du vent",
+            "effets": "Vous gagnez une résistance au vent"
+        },
+        {
+            "nom": "Enfant de la foudre",
+            "effets": "Vous gagnez une résistance à la foudre"
+        },
+        {
+            "nom": "Enfant du feu",
+            "effets": "Vous gagnez une résistance au feu"
+        },
+        {
+            "nom": "Enfant de la terre",
+            "effets": "Vous gagnez une résistance à la terre"
+        },
+        {
+            "nom": "Enfant de la glace",
+            "effets": "Vous gagnez une résistance à la glace"
+        },
+        {
+            "nom": "Enfant de la lumière",
+            "effets": "Vous gagnez une résistance à la lumière"
+        },
+        {
+            "nom": "Enfant des ténèbre",
+            "effets": "Vous gagnez une résistance aux ténèbres"
+        },
+        {
+            "nom": "Courageux",
+            "effets": "Vous devenez immunisé à la terreur"
+        },
+        {
+            "nom": "Corps sain",
+            "effets": "Vous devenez immunisé au poison"
+        },
+        {
+            "nom": "Esprit sain",
+            "effets": "Vous devenez immunisé à la confusion et à la folie"
+        },
+        {
+            "nom": "Détermination",
+            "effets": "Lorsque vous tombez sous 50% pv, vous gagnez +10 de vitesse"
+        },
+        {
+            "nom": "Porte bonheur",
+            "effets": "Une fois par combat, vous pouvez relancer un dé."
+        }
+    ],
+    "stats": [
+        {
+            "Résultat": "Faible",
+            "PV": 20,
+            "résultats": "Lent",
+            "dégats": 3,
+            "vitesse": 6
+        },
+        {
+            "Résultat": "Moyen bas",
+            "PV": 23,
+            "résultats": "Moyen bas",
+            "dégats": 5,
+            "vitesse": 9
+        },
+        {
+            "Résultat": "Moyen hauit",
+            "PV": 25,
+            "résultats": "Moyen haut",
+            "dégats": 7,
+            "vitesse": 10
+        },
+        {
+            "Résultat": "Bon",
+            "PV": 27,
+            "résultats": "Bon",
+            "dégats": 8,
+            "vitesse": 14
+        },
+        {
+            "Résultat": "très bon",
+            "PV": 30,
+            "résultats": "Rapide",
+            "dégats": 10,
+            "vitesse": 16
+        },
+        {
+            "Résultat": "Excellent",
+            "PV": 35,
+            "résultats": "Très rapide",
+            "dégats": 12,
+            "vitesse": 18
+        },
+        {
+            "Résultat": "colossale",
+            "PV": 40,
+            "résultats": "Fusé",
+            "dégats": 14,
+            "vitesse": 20
+        },
+        {
+            "Résultat": "Kaido",
+            "PV": 45,
+            "résultats": "Minato",
+            "dégats": 15,
+            "vitesse": 22
+        }
+    ]
+}

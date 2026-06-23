@@ -1,0 +1,631 @@
+/* ========================================
+   STYLES DE LA PAGE PERSONNAGE
+   ======================================== */
+
+/* --- SECTION DE CONNEXION --- */
+.auth-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: 20px;
+}
+
+.auth-card {
+  background: linear-gradient(135deg, rgba(20, 10, 30, 0.9), rgba(10, 5, 20, 0.95));
+  border: 2px solid rgba(145, 70, 255, 0.3); /* Twitch purple border */
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 485px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6), 
+    0 0 30px rgba(145, 70, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: cardEntrance 0.5s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.auth-card__twitch-logo {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 15px rgba(145, 70, 255, 0.6));
+  animation: logoPulse 2s infinite ease-in-out;
+}
+
+@keyframes logoPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(145, 70, 255, 0.8)); }
+  100% { transform: scale(1); }
+}
+
+.auth-card h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #d8ad78, #f8f4e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.auth-card__subtitle {
+  color: #c9bada;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  margin-bottom: 36px;
+}
+
+.auth-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Boutons de connexion */
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  border: none;
+}
+
+.auth-btn--twitch {
+  background: #9146FF; /* Twitch Brand Color */
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4);
+}
+
+.auth-btn--twitch:hover {
+  background: #a366ff;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(145, 70, 255, 0.6),
+    0 0 15px rgba(145, 70, 255, 0.3);
+}
+
+.auth-btn--twitch:active {
+  transform: translateY(0);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #5a4b70;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(145, 70, 255, 0.15);
+}
+
+.divider span {
+  padding: 0 10px;
+}
+
+.auth-btn--demo {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e0d5e8;
+}
+
+.auth-btn--demo:hover {
+  background: rgba(130, 80, 220, 0.15);
+  border-color: rgba(130, 80, 220, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* --- FICHE DE PERSONNAGE --- */
+.character-sheet {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.char-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(25, 15, 45, 0.5), rgba(15, 8, 25, 0.7));
+  border: 1px solid rgba(130, 80, 220, 0.25);
+  border-radius: 16px;
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  backdrop-filter: blur(8px);
+}
+
+.char-profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.char-profile__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid #9146FF;
+  box-shadow: 0 0 20px rgba(145, 70, 255, 0.5);
+  background-color: #1a1a1a;
+  object-fit: cover;
+}
+
+.char-profile__username {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #f8f4e8;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.02em;
+}
+
+.char-profile__badge-row {
+  display: flex;
+  gap: 10px;
+}
+
+.char-profile__class,
+.char-profile__rank {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid rgba(145, 70, 255, 0.3);
+}
+
+.char-profile__class {
+  background: rgba(145, 70, 255, 0.15);
+  color: #d6c5f0;
+}
+
+.char-profile__rank {
+  background: rgba(216, 173, 120, 0.1);
+  color: #ffd59a;
+  border-color: rgba(216, 173, 120, 0.3);
+}
+
+.logout-btn {
+  background: rgba(215, 35, 45, 0.1);
+  border: 1px solid rgba(215, 35, 45, 0.3);
+  color: #ffc4c4;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(215, 35, 45, 0.25);
+  border-color: rgba(215, 35, 45, 0.6);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Grille principale */
+.char-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.char-column {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.char-card {
+  background: linear-gradient(135deg, rgba(20, 10, 30, 0.9), rgba(10, 5, 20, 0.95));
+  border: 2px solid rgba(130, 80, 220, 0.25);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.char-card__title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffd59a;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(130, 80, 220, 0.2);
+  padding-bottom: 10px;
+}
+
+/* Barres de stats */
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stat-item__label {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: #e0d5e8;
+}
+
+.stat-item__val {
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.stat-item__bar-container {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-item__bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stat-item__bar--pv {
+  background: linear-gradient(90deg, #2e7d32, #4caf50);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+}
+
+.stat-item__bar--deg {
+  background: linear-gradient(90deg, #c62828, #ef5350);
+  box-shadow: 0 0 10px rgba(239, 83, 80, 0.4);
+}
+
+.stat-item__bar--vit {
+  background: linear-gradient(90deg, #0288d1, #26c6da);
+  box-shadow: 0 0 10px rgba(38, 198, 218, 0.4);
+}
+
+.stat-item__bar--def {
+  background: linear-gradient(90deg, #e65100, #ff9800);
+  box-shadow: 0 0 10px rgba(230, 81, 0, 0.4);
+}
+
+/* Talents naturels */
+.char-talents-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.char-talent-badge {
+  background: rgba(130, 80, 220, 0.15);
+  border: 1px solid rgba(130, 80, 220, 0.35);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e0d5e8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Carte Pacte */
+
+.pact-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pact-card__badge {
+  background: rgba(216, 173, 120, 0.15);
+  color: #ffd59a;
+  border: 1px solid rgba(216, 173, 120, 0.4);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+
+.pact-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(216, 173, 120, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.pact-profile__emoji {
+  font-size: 2.2rem;
+  width: 56px;
+  height: 56px;
+  background: rgba(216, 173, 120, 0.1);
+  border: 1px solid rgba(216, 173, 120, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pact-profile__name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f8f4e8;
+  margin: 0 0 4px 0;
+}
+
+.pact-profile__intro {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #c9bada;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.pact-skill-box {
+  background: rgba(145, 70, 255, 0.05);
+  border: 1px dashed rgba(145, 70, 255, 0.3);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.pact-skill-box__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #bfa8e3;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.pact-skill-box__desc {
+  font-size: 0.85rem;
+  color: #e0d5e8;
+  line-height: 1.4;
+}
+
+/* Liste des compétences */
+.skills-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deck-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+}
+
+.deck-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(130, 80, 220, 0.25);
+  transform: translateX(3px);
+}
+
+.deck-item__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.deck-item__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #f8f4e8;
+  margin-bottom: 2px;
+}
+
+.deck-item__effect {
+  font-size: 0.8rem;
+  color: #b8a89a;
+}
+
+.deck-item__badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 10px;
+  border-radius: 99px;
+  border: 1px solid;
+}
+
+.deck-item__badge.actif {
+  background: rgba(215, 35, 45, 0.1);
+  color: #ff8080;
+  border-color: rgba(215, 35, 45, 0.3);
+}
+
+.deck-item__badge.passif {
+  background: rgba(100, 200, 120, 0.1);
+  color: #90ff90;
+  border-color: rgba(100, 200, 120, 0.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .char-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .char-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .logout-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .char-talents-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- COMPOSANTS DE MISES EN PAGE ADDITIONNELS --- */
+
+/* Carte combinée Talents & Compétences */
+.combined-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.combined-layout__column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.column-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #bfa8e3;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed rgba(130, 80, 220, 0.15);
+  padding-bottom: 4px;
+}
+
+/* Liste des choix d'évolutions du Pacte */
+.pact-evolutions {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(130, 80, 220, 0.2);
+}
+
+.pact-evolutions__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffd59a;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.pact-evolutions__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pact-evo-item {
+  font-size: 0.82rem;
+  color: #e0d5e8;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(130, 80, 220, 0.15);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.pact-evo-item strong {
+  color: #bfa8e3;
+}
+
+/* Liste de l'inventaire */
+.inventory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inventory-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.inventory-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(130, 80, 220, 0.25);
+  transform: translateX(3px);
+}
+
+.inventory-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inventory-item__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #f8f4e8;
+}
+
+.inventory-item__stat {
+  font-size: 0.8rem;
+  color: #cd7e46; /* Amber color for stats modified */
+  font-weight: 600;
+}
+
+.inventory-item__badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.inventory-item__badge.equipement {
+  background: rgba(216, 173, 120, 0.1);
+  color: #ffd59a;
+  border-color: rgba(216, 173, 120, 0.3);
+}
+
+.inventory-item__badge.consommable {
+  background: rgba(100, 200, 120, 0.1);
+  color: #90ff90;
+  border-color: rgba(100, 200, 120, 0.3);
+}
+
+/* responsive combined card columns */
+@media (max-width: 768px) {
+  .combined-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

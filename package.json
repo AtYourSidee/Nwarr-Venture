@@ -1,0 +1,11 @@
+{
+  "name": "nwarr-venture",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "browser-sync": "^2.27.11"
+  },
+  "scripts": {
+    "start": "browser-sync start --server --files \"index.html, **/*.css, **/*.js\""
+  }
+}

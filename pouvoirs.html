@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pouvoirs - Nwarr'Venture</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="pouvoirs.css" />
+</head>
+
+<body>
+  <!-- Canvas de fond animé et interactif -->
+  <canvas id="bgCanvas" class="background-canvas"></canvas>
+
+  <header class="topbar">
+    <nav class="topbar__nav">
+      <div class="topbar__group topbar__group--left">
+        <a href="index.html#lore" class="topbar__button">Lore</a>
+        <a href="#pouvoirs" class="topbar__button">Pouvoirs</a>
+      </div>
+
+      <a href="index.html" class="topbar__brand" id="brandButton" aria-label="Accueil">Nwarr'Venture</a>
+
+      <div class="topbar__group topbar__group--right">
+        <a href="index.html#aventures" class="topbar__button">Aventures</a>
+        <a href="personnage.html" class="topbar__button">Personnage</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page__content">
+    <section class="powers-hero">
+      <h1>Les Pouvoirs</h1>
+      <p>Maîtrisez les pouvoirs qui façonnent votre destinée. Chaque talent renferme une puissance, chaque capacité
+        une stratégie.</p>
+    </section>
+
+    <!-- Section des Talents Naturels -->
+    <div class="section-header talents-header">
+      <h2 class="section-title">Les Talents Naturels</h2>
+      <button id="toggle-talents-btn" class="toggle-btn" aria-label="Réduire/Agrandir la section des talents">
+        <span class="toggle-btn__icon">−</span>
+        <span class="toggle-btn__text">Masquer les talents</span>
+      </button>
+    </div>
+
+    <div id="talents-grid-container" class="grid-wrapper">
+      <!-- Filtres des talents -->
+      <div class="talents-filters">
+        <button class="talent-filter-btn active" data-filter="all">Tous les talents</button>
+        <button class="talent-filter-btn" data-filter="attaque">Attaque</button>
+        <button class="talent-filter-btn" data-filter="magie">Magie</button>
+        <button class="talent-filter-btn" data-filter="soutien">Soutien</button>
+        <button class="talent-filter-btn" data-filter="défense">Défense</button>
+      </div>
+
+      <div id="talents-grid" class="talents-grid">
+        <!-- Les cartes de talents seront générées par JavaScript -->
+      </div>
+    </div>
+
+    <!-- En-tête de la section des compétences avec bouton de repli -->
+    <div class="section-header">
+      <h2 class="section-title">Les compétences</h2>
+      <button id="toggle-grid-btn" class="toggle-btn" aria-label="Réduire/Agrandir la section">
+        <span class="toggle-btn__icon">−</span>
+        <span class="toggle-btn__text">Masquer les compétences</span>
+      </button>
+    </div>
+
+    <!-- Grille des cartes d'Arcanes -->
+    <div id="competences-grid-container" class="grid-wrapper">
+      <!-- Filtres des compétences -->
+      <div class="powers-filters">
+        <button class="filter-btn active" data-filter="all">Toutes les compétences</button>
+        <button class="filter-btn" data-filter="attaque">Attaque</button>
+        <button class="filter-btn" data-filter="magie">Magie</button>
+        <button class="filter-btn" data-filter="soutien">Soutien</button>
+        <button class="filter-btn" data-filter="défense">Défense</button>
+      </div>
+
+      <div id="competences-grid" class="arcanes-grid">
+        <!-- Les cartes seront générées par JavaScript -->
+      </div>
+    </div>
+
+    <!-- Section des Esprits -->
+    <div class="section-header esprits-header">
+      <h2 class="section-title">Les 7 Grands Esprits</h2>
+      <button id="toggle-esprits-btn" class="toggle-btn" aria-label="Réduire/Agrandir la section des esprits">
+        <span class="toggle-btn__icon">−</span>
+        <span class="toggle-btn__text">Masquer les esprits</span>
+      </button>
+    </div>
+
+    <div id="esprits-grid-container" class="grid-wrapper">
+      <!-- Introduction et Règles des Esprits -->
+      <div class="esprits-intro">
+        <div class="esprits-intro__lore">
+          <h3>Les Sept Esprits</h3>
+          <p class="lore-text">« Des entités ancestrales dont les noms traversent les âges. »</p>
+          <p class="lore-credit">Gloire à l'Empereur Nwaar, qui conquit les Sept et permit aux mortels de marcher dans
+            leurs pas.</p>
+        </div>
+        <div class="esprits-intro__rules">
+          <h3>Le Pacte Spirituel</h3>
+          <div class="rule-item">
+            <span class="rule-icon">⚠️</span>
+            <div class="rule-content">
+              <strong>Un engagement unique</strong>
+              <p>Durant vos aventures, l’esprit avec lequel vous passerez un pacte sera votre plus grand allié.
+                Choisissez avec soin, car un pacte ne peut être rompu.</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">⚔️</span>
+            <div class="rule-content">
+              <strong>Défis & Évolutions</strong>
+              <p>Chaque pacte propose des défis pour passer au niveau supérieur. Une fois relevé, vous pourrez choisir
+                une amélioration parmi les 3 disponibles à chaque niveau (Bonus de statistiques, compétence active, ou
+                capacité passive).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="esprits-grid" class="esprits-grid">
+        <!-- Les cartes d'esprits seront générées par JavaScript -->
+      </div>
+    </div>
+
+    <div id="error" class="error-message" style="display: none;">
+      <p>Erreur lors du chargement des compétences.</p>
+    </div>
+  </main>
+
+  <!-- Containers pour les sidebars de compétences d'esprits (non-modal) -->
+  <div id="passifs-sidebar-container" class="sidebar-container sidebar-container--left"></div>
+  <div id="competences-sidebar-container" class="sidebar-container sidebar-container--right"></div>
+
+  <script src="background.js"></script>
+  <script src="pouvoirs.js"></script>
+</body>
+
+</html>

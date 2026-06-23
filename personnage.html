@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche Personnage - Nwarr'Venture</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="personnage.css" />
+</head>
+
+<body>
+  <!-- Canvas de fond animé et interactif -->
+  <canvas id="bgCanvas" class="background-canvas"></canvas>
+
+  <header class="topbar">
+    <nav class="topbar__nav">
+      <div class="topbar__group topbar__group--left">
+        <a href="index.html#lore" class="topbar__button">Lore</a>
+        <a href="pouvoirs.html" class="topbar__button">Pouvoirs</a>
+      </div>
+
+      <a href="index.html" class="topbar__brand" id="brandButton" aria-label="Accueil">Nwarr'Venture</a>
+
+      <div class="topbar__group topbar__group--right">
+        <a href="index.html#aventures" class="topbar__button">Aventures</a>
+        <a href="personnage.html" class="topbar__button">Personnage</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page__content">
+    
+    <!-- SECTION DE CONNEXION -->
+    <section id="login-section" class="auth-section">
+      <div class="auth-card">
+        <div class="auth-card__twitch-logo">🔮</div>
+        <h1>Accès Fiche Héros</h1>
+        <p class="auth-card__subtitle">Reliez votre compte Twitch pour charger vos statistiques d'aventure, votre classe et votre pacte spirituel en direct.</p>
+        
+        <div class="auth-card__actions">
+          <button id="twitch-login-btn" class="auth-btn auth-btn--twitch">
+            <svg class="twitch-svg" viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+            </svg>
+            Se connecter avec Twitch
+          </button>
+          
+          <div class="divider">
+            <span>OU</span>
+          </div>
+          
+          <button id="demo-login-btn" class="auth-btn auth-btn--demo">
+            🕹️ Mode Simulation (Démo)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION FICHE DE PERSONNAGE -->
+    <section id="character-section" class="character-sheet" style="display: none;">
+      <!-- En-tête du profil -->
+      <div class="char-header">
+        <div class="char-profile">
+          <img id="char-avatar" src="static/twitchpp.png" alt="Avatar Twitch" class="char-profile__avatar" />
+          <div class="char-profile__meta">
+            <h1 id="char-name" class="char-profile__username">PseudoTwitch</h1>
+            <div class="char-profile__badge-row">
+              <span id="char-rank" class="char-profile__rank">Rang : Aventurier</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="logout-btn" class="logout-btn">
+          🚪 Déconnexion
+        </button>
+      </div>
+
+      <!-- Corps de la fiche personnage -->
+      <div class="char-grid">
+        
+        <!-- Cartes Statistiques -->
+        <div class="char-column">
+          <div class="char-card">
+            <h2 class="char-card__title">Statistiques de Combat</h2>
+            <div class="stats-list">
+              <!-- Points de vie -->
+              <div class="stat-item">
+                <div class="stat-item__label">
+                  <span>❤️ Points de Vie (PV)</span>
+                  <span id="stat-pv-val" class="stat-item__val">0 / 0</span>
+                </div>
+                <div class="stat-item__bar-container">
+                  <div id="stat-pv-bar" class="stat-item__bar stat-item__bar--pv" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Puissance / Dégâts -->
+              <div class="stat-item">
+                <div class="stat-item__label">
+                  <span>⚔️ Puissance (DEG)</span>
+                  <span id="stat-deg-val" class="stat-item__val">0</span>
+                </div>
+                <div class="stat-item__bar-container">
+                  <div id="stat-deg-bar" class="stat-item__bar stat-item__bar--deg" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Vitesse -->
+              <div class="stat-item">
+                <div class="stat-item__label">
+                  <span>🏃 Vitesse (VIT)</span>
+                  <span id="stat-vit-val" class="stat-item__val">0</span>
+                </div>
+                <div class="stat-item__bar-container">
+                  <div id="stat-vit-bar" class="stat-item__bar stat-item__bar--vit" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Défense -->
+              <div class="stat-item">
+                <div class="stat-item__label">
+                  <span>🛡️ Résistance (DEF)</span>
+                  <span id="stat-def-val" class="stat-item__val">0</span>
+                </div>
+                <div class="stat-item__bar-container">
+                  <div id="stat-def-bar" class="stat-item__bar stat-item__bar--def" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carte Inventaire -->
+          <div class="char-card">
+            <h2 class="char-card__title">Sac à Dos (Inventaire)</h2>
+            <div id="char-inventory-container" class="inventory-list">
+              <!-- Rempli en JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Pacte Spirituel et Compétences -->
+        <div class="char-column">
+          
+          <!-- Carte Pacte -->
+          <div class="char-card pact-card">
+            <div class="pact-card__header">
+              <h2 class="char-card__title">Pacte Conclu</h2>
+              <span id="pact-level-badge" class="pact-card__badge">Pacte Niv. 0</span>
+            </div>
+            
+            <div class="pact-profile">
+              <div id="pact-emoji" class="pact-profile__emoji">✨</div>
+              <div class="pact-profile__details">
+                <h3 id="pact-name" class="pact-profile__name">Aucun esprit</h3>
+                <p id="pact-intro" class="pact-profile__intro">Vous n'avez pas encore passé de pacte avec un Grand Esprit.</p>
+              </div>
+            </div>
+
+            <div class="pact-skill-box">
+              <div class="pact-skill-box__title">Capacité Unique active :</div>
+              <div id="pact-unique-desc" class="pact-skill-box__desc">Aucune capacité active.</div>
+            </div>
+
+            <!-- Choix d'évolutions (Niv 2+) -->
+            <div class="pact-evolutions">
+              <div class="pact-evolutions__title">Évolutions choisies :</div>
+              <div id="pact-evolutions-list" class="pact-evolutions__list">
+                <!-- Rempli en JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Talents & Compétences Combinés -->
+          <div class="char-card combined-card">
+            <h2 class="char-card__title">Talents & Compétences</h2>
+            <div class="combined-layout">
+              <div class="combined-layout__column">
+                <h3 class="column-title">Talents Naturels</h3>
+                <div id="char-talents-container" class="skills-deck">
+                  <!-- Rempli en JS -->
+                </div>
+              </div>
+              <div class="combined-layout__column">
+                <h3 class="column-title">Compétences</h3>
+                <div id="equipped-skills-list" class="skills-deck">
+                  <!-- Rempli en JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="background.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="personnage.js"></script>
+</body>
+
+</html>

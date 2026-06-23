@@ -1,0 +1,219 @@
+[
+  {
+    "id": "conquerant",
+    "nom": "Le Conquérant",
+    "intro": "Celui qui n'avait rien et qui a juré de tout reprendre",
+    "emoji": "👑",
+    "capacite_nom": "Droit du plus fort",
+    "capacite_effet": "Une fois par zone, le joueur peut défier un PNJ en combat singulier. S'il accepte et que le joueur gagne, il obtient une récompense qui peut l'aider durant l'aventure. De plus, le joueur peut estimer la puissance d'un ennemi.",
+    "stats_depart": "+5 FOR / +5 VITE / +0 DEF",
+    "competence_depart": "Aucune",
+    "passive_depart": "Estimation",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+8 FOR / +9 VITE / +0 DEF",
+        "competence": "Tranchant d'Orion",
+        "passive": "Voie du sabre"
+      },
+      {
+        "niveau": 3,
+        "stats": "+10 FOR / +10 VITE / +0 DEF",
+        "competence": "Coup royal",
+        "passive": "Haki des rois"
+      },
+      {
+        "niveau": 4,
+        "stats": "+15 FOR / +15 VITE / +0 DEF",
+        "competence": "King Slash",
+        "passive": "Volonté inflexible"
+      }
+    ]
+  },
+  {
+    "id": "veuve",
+    "nom": "La Veuve",
+    "intro": "Celle qui a perdu un être cher et qui ne laissera plus personne mourir sous ses yeux",
+    "emoji": "🖤",
+    "capacite_nom": "Compassion",
+    "capacite_effet": "Une fois par zone, le joueur peut tenter d'apaiser un PNJ ou un monstre en demandant 'Qui t'as fait du mal ?'. Si cela fonctionne, il peut éviter les combats, rendre les adversaires moins virulents ou faire d'un PNJ ennemi un allié.",
+    "stats_depart": "Soins prodigués augmentés de +5",
+    "competence_depart": "Soins légers",
+    "passive_depart": "Aucune",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+4 FOR / +4 VITE / +2 DEF",
+        "competence": "Soins supérieurs",
+        "passive": "Aube ardente"
+      },
+      {
+        "niveau": 3,
+        "stats": "+6 FOR / +6 VITE / +2 DEF",
+        "competence": "Fantasia Supérieure",
+        "passive": "Continue le combat"
+      },
+      {
+        "niveau": 4,
+        "stats": "+15 FOR / +10 VITE / +6 DEF",
+        "competence": "Fontaine de vie",
+        "passive": "Présence rassurante"
+      }
+    ]
+  },
+  {
+    "id": "chasseuse",
+    "nom": "La Chasseuse",
+    "intro": "Celle qui traque, qui tire et qui ne rate jamais",
+    "emoji": "🏹",
+    "capacite_nom": "Pistage",
+    "capacite_effet": "Le joueur peut obtenir des informations sur les lieux, les directions à prendre ou les ennemis aux alentours. Il peut aussi désigner un monstre comme une proie et le suivre à la trace, ainsi que remarquer des traces de monstres dans les bâtiments.",
+    "stats_depart": "+0 FOR / +2 VITE / +4 DEF",
+    "competence_depart": "Aucune",
+    "passive_depart": "Scan (début de combat)",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+0 FOR / +7 VITE / +7 DEF",
+        "competence": "Sommation",
+        "passive": "Prédateur"
+      },
+      {
+        "niveau": 3,
+        "stats": "+0 FOR / +10 VITE / +11 DEF",
+        "competence": "Tri-Éléments",
+        "passive": "Poursuite"
+      },
+      {
+        "niveau": 4,
+        "stats": "+0 FOR / +15 VITE / +18 DEF",
+        "competence": "Tir mortel",
+        "passive": "Traque mortelle"
+      }
+    ]
+  },
+  {
+    "id": "etranger",
+    "nom": "L'Étranger",
+    "intro": "Celui qui vient d'ailleurs et qui connaît les mystères du monde",
+    "emoji": "☄️",
+    "capacite_nom": "L'Œil de l'Étranger",
+    "capacite_effet": "Une fois par zone, l'étranger peut demander quel est l'élément le plus important ici et obtenir une réponse.",
+    "stats_depart": "Toutes les compétences magiques gagnent +1 utilisation et +2 dégâts.",
+    "competence_depart": "Une magie élémentaire au choix",
+    "passive_depart": "Aucune",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+5 FOR / +5 VITE / +5 DEF",
+        "competence": "Magie élémentaire (au choix)",
+        "passive": "Curiosité infinie"
+      },
+      {
+        "niveau": 3,
+        "stats": "+8 FOR / +8 VITE / +8 DEF",
+        "competence": "Codex Interdit",
+        "passive": "Apprentissage magique"
+      },
+      {
+        "niveau": 4,
+        "stats": "+12 FOR / +12 VITE / +12 DEF",
+        "competence": "Canon Atomique d'Orion",
+        "passive": "Maître de la magie"
+      }
+    ]
+  },
+  {
+    "id": "gardien",
+    "nom": "Le Gardien",
+    "intro": "Celui qui protège et qui n'abandonne jamais personne",
+    "emoji": "🛡️",
+    "capacite_nom": "Refuge",
+    "capacite_effet": "Une fois par aventure, le joueur peut désigner un lieu comme refuge. Dans cette pièce, il ne peut rien vous arriver de mal. De plus, si vous avez une Veuve dans votre groupe lors du refuge, vous regagnez tous vos PV manquants.",
+    "stats_depart": "+10 FOR / +0 VITE / +0 DEF",
+    "competence_depart": "Sacrifice",
+    "passive_depart": "Aucune",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+15 FOR / +2 VITE / +0 DEF",
+        "competence": "Forteresse vivante",
+        "passive": "Inébranlable"
+      },
+      {
+        "niveau": 3,
+        "stats": "+25 FOR / +3 VITE / +0 DEF",
+        "competence": "Mandale du titan",
+        "passive": "Contre-attaque"
+      },
+      {
+        "niveau": 4,
+        "stats": "+35 FOR / +5 VITE / +0 DEF",
+        "competence": "Rempart",
+        "passive": "Protecteur"
+      }
+    ]
+  },
+  {
+    "id": "fourbe",
+    "nom": "Le Fourbe",
+    "intro": "Celui qui vient d'en bas et qui atteindra le sommet par la ruse",
+    "emoji": "🎭",
+    "capacite_nom": "Toujours une Issue",
+    "capacite_effet": "Une fois par aventure, le joueur peut demander s'il y a une autre solution à un problème. L'esprit va lui proposer une alternative : négociation, passage caché, raccourci, opportunité ou autre.",
+    "stats_depart": "+0 FOR / +0 VITE / +6 DEF",
+    "competence_depart": "Aucune",
+    "passive_depart": "Roi des voleurs (plus de récompenses)",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+0 FOR / +4 VITE / +10 DEF",
+        "competence": "Coup bas",
+        "passive": "Derrière toi"
+      },
+      {
+        "niveau": 3,
+        "stats": "+0 FOR / +8 VITE / +15 DEF",
+        "competence": "Manipulation",
+        "passive": "Opportuniste"
+      },
+      {
+        "niveau": 4,
+        "stats": "+0 FOR / +15 VITE / +20 DEF",
+        "competence": "Triche",
+        "passive": "Ange de la mort"
+      }
+    ]
+  },
+  {
+    "id": "danseuse",
+    "nom": "La Danseuse",
+    "intro": "Celle dont le pas rapide envoûte et enchante",
+    "emoji": "💃",
+    "capacite_nom": "Charme Irrésistible",
+    "capacite_effet": "Une fois par zone, le joueur peut jouer de ses charmes, influencer les PNJ et obtenir ce qu'il veut de la personne.",
+    "stats_depart": "+0 FOR / +3 VITE / +4 DEF",
+    "competence_depart": "Rythme endiablé",
+    "passive_depart": "Aucune",
+    "evolutions": [
+      {
+        "niveau": 2,
+        "stats": "+5 FOR / +5 VITE / +7 DEF",
+        "competence": "Danse de la lune",
+        "passive": "Danse envoûtante"
+      },
+      {
+        "niveau": 3,
+        "stats": "+2 FOR / +7 VITE / +10 DEF",
+        "competence": "Danse du soleil",
+        "passive": "Danse de feu"
+      },
+      {
+        "niveau": 4,
+        "stats": "+5 FOR / +10 VITE / +15 DEF",
+        "competence": "Danse du démon",
+        "passive": "L'arabesque danse toujours"
+      }
+    ]
+  }
+]

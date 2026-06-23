@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nwarr'Venture</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (window.location.hash && window.location.hash.includes('access_token=')) {
+        const path = window.location.pathname;
+        const dir = path.substring(0, path.lastIndexOf('/') + 1);
+        window.location.href = window.location.origin + dir + 'personnage.html' + window.location.hash;
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Canvas de fond animé et interactif -->
+    <canvas id="bgCanvas" class="background-canvas"></canvas>
+
+    <header class="topbar">
+      <nav class="topbar__nav">
+        <div class="topbar__group topbar__group--left">
+          <a href="#lore" class="topbar__button">Lore</a>
+          <a href="pouvoirs.html" class="topbar__button">Pouvoirs</a>
+        </div>
+
+        <a href="#" class="topbar__brand" id="brandButton" aria-label="Accueil">Nwarr'Venture</a>
+
+        <div class="topbar__group topbar__group--right">
+          <a href="#aventures" class="topbar__button">Aventures</a>
+          <a href="personnage.html" class="topbar__button">Personnage</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page__content">
+  <section class="hero">
+    <h1>Bienvenue dans l'univers de Nwarr'Venture</h1>
+    <p>L'épopée interactive en direct. Affrontez les ténèbres, forgez votre légende et marquez l'histoire de ce monde avec la communauté.</p>
+  </section>
+
+  <!-- Twitch status widget -->
+  <section class="twitch-widget" aria-label="Statut Twitch du streamer">
+    <a class="twitch-link" href="https://twitch.tv/luidjy_skyblex" target="_blank" rel="noopener noreferrer">
+      <img src="static/twitchpp.png" alt="Avatar Twitch" class="tw-avatar" />
+      <div class="tw-meta">
+        <div class="tw-name">luidjy_skyblex</div>
+        <div class="tw-sub"></div>
+      </div>
+      <div class="tw-status offline" title="Cliquer pour rejoindre le live">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="live-text">Offline</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- Grille principale : 4 cartes -->
+  <section class="cards-grid" aria-label="Navigation principale">
+    <a class="card" href="#lore">
+      <div class="card-inner">
+        <h3 class="card-title">Lore</h3>
+        <p class="card-desc">Explorez les mystères de ce monde. Consultez la carte, étudiez le bestiaire des créatures rencontrées et parcourez le journal des équipements découverts.</p>
+      </div>
+    </a>
+
+    <a class="card" href="pouvoirs.html">
+      <div class="card-inner">
+        <h3 class="card-title">Pouvoirs</h3>
+        <p class="card-desc">Le savoir est une arme. Retrouvez la liste complète des compétences, les capacités passives et les détails des pactes conclus avec les esprits.</p>
+      </div>
+    </a>
+
+    <a class="card" href="#aventures">
+      <div class="card-inner">
+        <h3 class="card-title">Aventures</h3>
+        <p class="card-desc">La mémoire de nos victoires. Replongez dans l'historique détaillé de toutes les aventures.</p>
+      </div>
+    </a>
+
+    <a class="card" href="personnage.html">
+      <div class="card-inner">
+        <h3 class="card-title">Personnage</h3>
+        <p class="card-desc">Votre destinée vous attend. Connectez-vous pour accéder à votre fiche de héros unique.</p>
+      </div>
+    </a>
+  </section>
+</main>
+
+    <script src="background.js"></script>
+    <script src="twitch.js"></script>
+  </body>
+</html>

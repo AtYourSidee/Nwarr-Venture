@@ -1,0 +1,1434 @@
+/* ========================================
+   STYLES DES POUVOIRS - PAGE ARCANES
+   ======================================== */
+
+.powers-hero {
+  max-width: 900px;
+  margin: 36px auto 80px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.powers-hero h1 {
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #d8ad78, #f8f4e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.powers-hero p {
+  font-size: 1.02rem;
+  color: #d6d6e3;
+  line-height: 1.6;
+}
+
+.page__content {
+  padding-bottom: 160px;
+}
+
+/* ========================================
+   FILTRES
+   ======================================== */
+
+.powers-filters,
+.talents-filters {
+  max-width: 1200px;
+  margin: 20px auto 40px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-btn,
+.talent-filter-btn {
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02));
+  color: #f8f4e8;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.filter-btn:hover,
+.talent-filter-btn:hover {
+  background: rgba(215, 35, 45, 0.1);
+  border-color: rgba(215, 35, 45, 0.3);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active,
+.talent-filter-btn.active {
+  background: linear-gradient(180deg, rgba(215, 35, 45, 0.4), rgba(150, 20, 30, 0.3));
+  border-color: rgba(215, 35, 45, 0.6);
+  box-shadow: 0 0 20px rgba(215, 35, 45, 0.3);
+}
+
+/* ========================================
+   GRILLE DES CARTES D'ARCANES
+   ======================================== */
+
+.arcanes-grid {
+  max-width: 1400px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   CARTE D'ARCANE
+   ======================================== */
+
+.arcane-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 480px;
+  background: linear-gradient(135deg, rgba(30, 15, 20, 0.9), rgba(20, 10, 15, 0.95));
+  border: 2px solid rgba(200, 50, 60, 0.3);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.arcane-card.expanded {
+  border-color: rgba(215, 35, 45, 0.6);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(215, 35, 45, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.arcane-card {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+  backface-visibility: hidden;
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardExit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+}
+
+.arcane-card.fade-in,
+.talent-card.fade-in {
+  animation: cardEntrance 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.arcane-card.fade-out,
+.talent-card.fade-out {
+  animation: cardExit 0.3s cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.arcane-card.hidden,
+.talent-card.hidden {
+  display: none !important;
+}
+
+/* Aura de base */
+.arcane-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 30%, rgba(215, 35, 45, 0.1), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+/* Aura de bordure colorée */
+.arcane-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(215, 35, 45, 0.4), rgba(150, 20, 30, 0.2));
+  opacity: 0;
+  z-index: -1;
+  filter: blur(12px);
+  transition: opacity 0.35s ease;
+}
+
+/* ========================================
+   CONTENU DE LA CARTE
+   ======================================== */
+
+.arcane-card__header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid rgba(215, 35, 45, 0.2);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  transition: all 0.4s ease;
+}
+
+.arcane-card__title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-transform: capitalize;
+  color: #f8f4e8;
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.arcane-card__type {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(215, 35, 45, 0.2);
+  color: #ffc4c4;
+  border: 1px solid rgba(215, 35, 45, 0.4);
+  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+/* ========================================
+   GEMME DE COÛT
+   ======================================== */
+
+.arcane-card__cost {
+  display: none;
+}
+
+/* ========================================
+   ZONE D'ILLUSTRATION
+   ======================================== */
+
+.arcane-card__icon {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-size: 4.5rem;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+  position: relative;
+  z-index: 2;
+  opacity: 0.9;
+  transition: all 0.35s ease;
+  min-height: 200px;
+}
+
+/* ========================================
+   ZONE DE CONTENU (ACCORDÉON)
+   ======================================== */
+
+.arcane-card__content {
+  display: block;
+}
+
+/* ========================================
+   ZONE DE DESCRIPTION (PARCHEMIN)
+   ======================================== */
+
+.arcane-card__footer {
+  padding: 20px 24px 24px;
+  background: linear-gradient(180deg, rgba(40, 20, 25, 0.6), rgba(20, 10, 15, 0.8));
+  border-top: 1px solid rgba(215, 35, 45, 0.2);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.arcane-card__description {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #e0d5c7;
+  margin-bottom: 12px;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.arcane-card__status {
+  font-size: 0.82rem;
+  color: #bfa8e3;
+  margin-bottom: 10px;
+}
+
+.arcane-card__cc {
+  font-size: 0.82rem;
+  color: #cd7e46;
+  margin-bottom: 10px;
+  border-top: 1px dashed rgba(215, 35, 45, 0.15);
+  padding-top: 6px;
+}
+
+.arcane-card__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-top: 8px;
+  border-top: 1px solid rgba(215, 35, 45, 0.15);
+  color: #b8a89a;
+}
+
+/* ========================================
+   VARIATIONS PAR TYPE (AURAS COLORÉES)
+   ======================================== */
+
+/* ATTAQUE - Rouge */
+.arcane-card[data-type="attaque"] {
+  border-color: rgba(215, 35, 45, 0.5);
+}
+
+.arcane-card[data-type="attaque"]::before {
+  background: radial-gradient(circle at 30% 30%, rgba(215, 35, 45, 0.2), transparent 60%);
+}
+
+.arcane-card[data-type="attaque"] .arcane-card__type {
+  color: #ff7070;
+  background: rgba(215, 35, 45, 0.3);
+  border-color: rgba(215, 35, 45, 0.6);
+}
+
+.arcane-card[data-type="attaque"]:hover::after {
+  background: linear-gradient(135deg, rgba(255, 100, 100, 0.6), rgba(215, 35, 45, 0.3));
+}
+
+/* MAGIE - Bleu/Violet */
+.arcane-card[data-type="magie"] {
+  border-color: rgba(80, 150, 220, 0.5);
+}
+
+.arcane-card[data-type="magie"]::before {
+  background: radial-gradient(circle at 30% 30%, rgba(80, 150, 220, 0.2), transparent 60%);
+}
+
+.arcane-card[data-type="magie"] .arcane-card__type {
+  color: #90d8ff;
+  background: rgba(80, 150, 220, 0.3);
+  border-color: rgba(80, 150, 220, 0.6);
+}
+
+.arcane-card[data-type="magie"]:hover::after {
+  background: linear-gradient(135deg, rgba(150, 200, 255, 0.6), rgba(80, 150, 220, 0.3));
+}
+
+/* SOUTIEN - Vert */
+.arcane-card[data-type="soutien"] {
+  border-color: rgba(100, 200, 120, 0.5);
+}
+
+.arcane-card[data-type="soutien"]::before {
+  background: radial-gradient(circle at 30% 30%, rgba(100, 200, 120, 0.2), transparent 60%);
+}
+
+.arcane-card[data-type="soutien"] .arcane-card__type {
+  color: #90ff90;
+  background: rgba(100, 200, 120, 0.3);
+  border-color: rgba(100, 200, 120, 0.6);
+}
+
+.arcane-card[data-type="soutien"]:hover::after {
+  background: linear-gradient(135deg, rgba(150, 255, 170, 0.6), rgba(100, 200, 120, 0.3));
+}
+
+/* DÉFENSE - Marron/Or */
+.arcane-card[data-type="défense"] {
+  border-color: rgba(200, 160, 80, 0.5);
+}
+
+.arcane-card[data-type="défense"]::before {
+  background: radial-gradient(circle at 30% 30%, rgba(200, 160, 80, 0.2), transparent 60%);
+}
+
+.arcane-card[data-type="défense"] .arcane-card__type {
+  color: #ffd59a;
+  background: rgba(200, 160, 80, 0.3);
+  border-color: rgba(200, 160, 80, 0.6);
+}
+
+.arcane-card[data-type="défense"]:hover::after {
+  background: linear-gradient(135deg, rgba(255, 220, 130, 0.6), rgba(200, 160, 80, 0.3));
+}
+
+/* ========================================
+   ÉTATS HOVER & ACTIVE
+   ======================================== */
+
+.arcane-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(215, 35, 45, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.arcane-card:hover::before {
+  opacity: 1;
+}
+
+.arcane-card:hover::after {
+  opacity: 1;
+}
+
+.arcane-card:hover .arcane-card__icon {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+
+
+/* ========================================
+   SECTION HEADER & TOGGLE
+   ======================================== */
+
+.section-header {
+  max-width: 1400px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(215, 35, 45, 0.2);
+  padding-bottom: 15px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #f8f4e8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.toggle-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d6d6e3;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background: rgba(215, 35, 45, 0.15);
+  border-color: rgba(215, 35, 45, 0.3);
+  color: #f8f4e8;
+}
+
+.toggle-btn__icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.grid-wrapper {
+  overflow: visible;
+  transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  max-height: none;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.grid-wrapper.collapsed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+
+/* ========================================
+   FILTRAGE DES CARTES (MODIFIÉ)
+   ======================================== */
+
+.arcane-card,
+.talent-card {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backface-visibility: hidden;
+}
+
+.arcane-card.hidden,
+.talent-card.hidden {
+  display: none;
+}
+
+/* ========================================
+   MESSAGES DE CHARGEMENT/ERREUR
+   ======================================== */
+
+.loading-message,
+.error-message {
+  max-width: 1400px;
+  margin: 60px auto;
+  padding: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #d6d6e3;
+}
+
+.error-message {
+  color: #ff8080;
+  background: rgba(215, 35, 45, 0.15);
+  border: 1px solid rgba(215, 35, 45, 0.3);
+  border-radius: 12px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1200px) {
+  .arcanes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .arcanes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .powers-hero h1 {
+    font-size: 2rem;
+  }
+
+  .powers-filters {
+    gap: 8px;
+  }
+
+  .filter-btn {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  .arcane-card {
+    min-height: 380px;
+  }
+
+  .arcane-card:hover {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .arcanes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .arcane-card__title {
+    font-size: 1.15rem;
+  }
+
+  .arcane-card__cost {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+
+  .powers-filters {
+    flex-direction: column;
+  }
+
+  .filter-btn {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   SECTION DES ESPRITS - GRILLE ET CARTES
+   ======================================== */
+
+.esprits-header {
+  margin-top: 80px;
+  transition: margin-top 0.4s ease;
+}
+
+#competences-grid-container.collapsed+.esprits-header {
+  margin-top: 0;
+}
+
+.esprits-grid {
+  max-width: 1400px;
+  margin: 60px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  animation: fadeIn 0.6s ease-out;
+  align-items: start;
+}
+
+.esprit-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(20, 10, 30, 0.9), rgba(10, 5, 20, 0.95));
+  border: 2px solid rgba(130, 80, 220, 0.35);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), border-color 0.35s, box-shadow 0.35s;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 530px;
+}
+
+.esprit-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(160, 100, 255, 0.7);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(130, 80, 220, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.esprit-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(130, 80, 220, 0.25);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.esprit-card__title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f8f4e8;
+  letter-spacing: 0.02em;
+}
+
+.esprit-card__icon-badge {
+  font-size: 1.6rem;
+  padding: 6px;
+  background: rgba(130, 80, 220, 0.2);
+  border: 1px solid rgba(130, 80, 220, 0.4);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.esprit-card__intro {
+  font-size: 0.92rem;
+  font-style: italic;
+  color: #c9bada;
+  line-height: 1.4;
+  margin-bottom: 18px;
+}
+
+.esprit-card__section {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(130, 80, 220, 0.15);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+
+.esprit-card__section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #bfa8e3;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.esprit-card__section-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #e0d5e8;
+}
+
+.esprit-meta-item {
+  font-size: 0.9rem;
+  color: #e0d5e8;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.esprit-meta-item span {
+  font-weight: 600;
+  color: #bfa8e3;
+}
+
+.esprit-card__evolutions-btn {
+  background: rgba(130, 80, 220, 0.15);
+  border: 1px solid rgba(130, 80, 220, 0.4);
+  color: #d6c5f0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: auto;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.esprit-card__evolutions-btn:hover {
+  background: rgba(130, 80, 220, 0.3);
+  border-color: rgba(160, 100, 255, 0.6);
+  color: #fff;
+}
+
+.esprit-card__evolutions-btn.active .evolution-btn-icon {
+  transform: rotate(180deg);
+}
+
+.evolution-btn-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.esprit-card__evolutions {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, margin-top 0.3s ease;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.esprit-card__evolutions.open {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(130, 80, 220, 0.3);
+}
+
+.evolution-level {
+  border-left: 2px solid rgba(130, 80, 220, 0.4);
+  padding-left: 12px;
+}
+
+.evolution-level__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #bfa8e3;
+  margin-bottom: 4px;
+}
+
+.evolution-level__details {
+  font-size: 0.82rem;
+  color: #e0d5e8;
+  line-height: 1.4;
+}
+
+.evolution-level__details span {
+  font-weight: 600;
+  color: #a890d0;
+}
+
+@media (max-width: 768px) {
+  .esprits-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* ========================================
+   INTRODUCTION LORE ET RÈGLES DES ESPRITS
+   ======================================== */
+
+.esprits-intro {
+  max-width: 1400px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+.esprits-intro__lore {
+  background: linear-gradient(135deg, rgba(30, 15, 45, 0.4), rgba(15, 5, 25, 0.6));
+  border: 1px solid rgba(130, 80, 220, 0.25);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.esprits-intro__lore h3 {
+  font-size: 1.5rem;
+  color: #d6c5f0;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.esprits-intro__lore .lore-text {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #e0d5e8;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.esprits-intro__lore .lore-credit {
+  font-size: 0.85rem;
+  color: #bfa8e3;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.95;
+  border-top: 1px solid rgba(130, 80, 220, 0.15);
+  padding-top: 12px;
+}
+
+.esprits-intro__rules {
+  background: linear-gradient(135deg, rgba(15, 5, 25, 0.6), rgba(30, 15, 45, 0.4));
+  border: 1px solid rgba(130, 80, 220, 0.25);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.esprits-intro__rules h3 {
+  font-size: 1.25rem;
+  color: #d6c5f0;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(130, 80, 220, 0.15);
+  padding-bottom: 8px;
+}
+
+.rule-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.rule-icon {
+  font-size: 1.5rem;
+  padding: 6px;
+  background: rgba(130, 80, 220, 0.15);
+  border-radius: 8px;
+  border: 1px solid rgba(130, 80, 220, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+}
+
+.rule-content strong {
+  display: block;
+  font-size: 0.92rem;
+  color: #bfa8e3;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.rule-content p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #e0d5e8;
+}
+
+@media (max-width: 900px) {
+  .esprits-intro {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ========================================
+   SECTION DES TALENTS NATURELS - GRILLE ET CARTES
+   ======================================== */
+
+.talents-header {
+  margin-top: 80px;
+}
+
+.talents-grid {
+  max-width: 1400px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.talent-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), border-color 0.35s, box-shadow 0.35s;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.talent-card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.talent-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.talent-card__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #f8f4e8;
+  letter-spacing: 0.02em;
+}
+
+.talent-card__icon {
+  font-size: 1.4rem;
+  padding: 4px;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ========================================
+   VARIATIONS PAR TYPE DE TALENT (AURAS)
+   ======================================== */
+
+/* ATTAQUE - Rouge */
+.talent-card[data-type="attaque"] {
+  border-color: rgba(215, 35, 45, 0.4);
+}
+
+.talent-card[data-type="attaque"] .talent-card__header {
+  border-bottom-color: rgba(215, 35, 45, 0.25);
+}
+
+.talent-card[data-type="attaque"] .talent-card__icon {
+  background: rgba(215, 35, 45, 0.15);
+  border-color: rgba(215, 35, 45, 0.35);
+}
+
+.talent-card[data-type="attaque"]:hover {
+  border-color: rgba(255, 100, 100, 0.6);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(215, 35, 45, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* MAGIE - Bleu */
+.talent-card[data-type="magie"] {
+  border-color: rgba(80, 150, 220, 0.4);
+}
+
+.talent-card[data-type="magie"] .talent-card__header {
+  border-bottom-color: rgba(80, 150, 220, 0.25);
+}
+
+.talent-card[data-type="magie"] .talent-card__icon {
+  background: rgba(80, 150, 220, 0.15);
+  border-color: rgba(80, 150, 220, 0.35);
+}
+
+.talent-card[data-type="magie"]:hover {
+  border-color: rgba(150, 200, 255, 0.6);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(80, 150, 220, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* SOUTIEN - Vert */
+.talent-card[data-type="soutien"] {
+  border-color: rgba(100, 200, 120, 0.4);
+}
+
+.talent-card[data-type="soutien"] .talent-card__header {
+  border-bottom-color: rgba(100, 200, 120, 0.25);
+}
+
+.talent-card[data-type="soutien"] .talent-card__icon {
+  background: rgba(100, 200, 120, 0.15);
+  border-color: rgba(100, 200, 120, 0.35);
+}
+
+.talent-card[data-type="soutien"]:hover {
+  border-color: rgba(150, 255, 170, 0.6);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(100, 200, 120, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* DÉFENSE - Or */
+.talent-card[data-type="défense"] {
+  border-color: rgba(200, 160, 80, 0.4);
+}
+
+.talent-card[data-type="défense"] .talent-card__header {
+  border-bottom-color: rgba(200, 160, 80, 0.25);
+}
+
+.talent-card[data-type="défense"] .talent-card__icon {
+  background: rgba(200, 160, 80, 0.15);
+  border-color: rgba(200, 160, 80, 0.35);
+}
+
+.talent-card[data-type="défense"]:hover {
+  border-color: rgba(255, 220, 130, 0.6);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(200, 160, 80, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.talent-card__effect {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #e2f0e8;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .talents-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* ========================================
+   TOOLTIPS & INTERACTIONS DES COMPÉTENCES D'ESPRITS
+   ======================================== */
+
+.interactive-competence {
+  color: #c9bada;
+  text-decoration: underline dashed rgba(130, 80, 220, 0.4);
+  cursor: help;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.interactive-competence.attaque {
+  color: #ff8080;
+  text-decoration-color: rgba(215, 35, 45, 0.5);
+}
+
+.interactive-competence.attaque:hover {
+  color: #ffb3b3;
+  text-shadow: 0 0 8px rgba(215, 35, 45, 0.8);
+  text-decoration-color: rgba(255, 100, 100, 0.9);
+}
+
+.interactive-competence.magie {
+  color: #90d8ff;
+  text-decoration-color: rgba(80, 150, 220, 0.5);
+}
+
+.interactive-competence.magie:hover {
+  color: #c6ebff;
+  text-shadow: 0 0 8px rgba(80, 150, 220, 0.8);
+  text-decoration-color: rgba(150, 200, 255, 0.9);
+}
+
+.interactive-competence.soutien {
+  color: #90ff90;
+  text-decoration-color: rgba(100, 200, 120, 0.5);
+}
+
+.interactive-competence.soutien:hover {
+  color: #c6ffc6;
+  text-shadow: 0 0 8px rgba(100, 200, 120, 0.8);
+  text-decoration-color: rgba(150, 255, 170, 0.9);
+}
+
+.interactive-competence.défense {
+  color: #ffd59a;
+  text-decoration-color: rgba(200, 160, 80, 0.5);
+}
+
+.interactive-competence.défense:hover {
+  color: #ffe6c2;
+  text-shadow: 0 0 8px rgba(200, 160, 80, 0.8);
+  text-decoration-color: rgba(255, 220, 130, 0.9);
+}
+
+/* ========================================
+   SIDEBARS DE DÉTAILS DE COMPÉTENCES D'ESPRITS
+   ======================================== */
+
+.sidebar-container {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 85vh;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  z-index: 1000;
+  pointer-events: none;
+  overflow-y: auto;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 80, 220, 0.3) transparent;
+}
+
+.sidebar-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-container::-webkit-scrollbar-thumb {
+  background: rgba(130, 80, 220, 0.3);
+  border-radius: 3px;
+}
+
+.sidebar-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(130, 80, 220, 0.5);
+}
+
+.sidebar-container--left {
+  left: 40px;
+}
+
+.sidebar-container--right {
+  right: 40px;
+}
+
+.sidebar-card {
+  position: relative;
+  pointer-events: auto;
+  background: linear-gradient(135deg, rgba(25, 15, 45, 0.98), rgba(15, 8, 25, 0.99));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(160, 100, 255, 0.4);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #e0d5e8;
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  animation: sidebarCardSlideIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes sidebarCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sidebarCardSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+  }
+}
+
+.sidebar-card.fade-out {
+  animation: sidebarCardSlideOut 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  pointer-events: none;
+}
+
+/* Card border & glow by type */
+.sidebar-card[data-type="attaque"] {
+  border-color: rgba(215, 35, 45, 0.7);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(215, 35, 45, 0.25);
+}
+
+.sidebar-card[data-type="magie"] {
+  border-color: rgba(80, 150, 220, 0.7);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(80, 150, 220, 0.25);
+}
+
+.sidebar-card[data-type="soutien"] {
+  border-color: rgba(100, 200, 120, 0.7);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(100, 200, 120, 0.25);
+}
+
+.sidebar-card[data-type="défense"] {
+  border-color: rgba(200, 160, 80, 0.7);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(200, 160, 80, 0.25);
+}
+
+.sidebar-card__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #b299cc;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  line-height: 1;
+  padding: 4px;
+  z-index: 10;
+}
+
+.sidebar-card__close:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.sidebar-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(160, 100, 255, 0.2);
+  padding-bottom: 6px;
+  padding-right: 18px;
+}
+
+.sidebar-card__title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffd59a;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar-card__pu {
+  background: rgba(130, 80, 220, 0.3);
+  color: #e0d5f5;
+  border: 1px solid rgba(160, 100, 255, 0.4);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sidebar-card__passive {
+  background: rgba(100, 200, 120, 0.2);
+  color: #90ff90;
+  border: 1px solid rgba(100, 200, 120, 0.3);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sidebar-card__type-row {
+  margin-bottom: 10px;
+}
+
+.sidebar-card__type-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.sidebar-card__type-badge.attaque {
+  background: rgba(215, 35, 45, 0.2);
+  color: #ff8080;
+  border: 1px solid rgba(215, 35, 45, 0.4);
+}
+
+.sidebar-card__type-badge.magie {
+  background: rgba(80, 150, 220, 0.2);
+  color: #90d8ff;
+  border: 1px solid rgba(80, 150, 220, 0.4);
+}
+
+.sidebar-card__type-badge.soutien {
+  background: rgba(100, 200, 120, 0.2);
+  color: #90ff90;
+  border: 1px solid rgba(100, 200, 120, 0.4);
+}
+
+.sidebar-card__type-badge.défense {
+  background: rgba(200, 160, 80, 0.2);
+  color: #ffd59a;
+  border: 1px solid rgba(200, 160, 80, 0.4);
+}
+
+.sidebar-card__effect {
+  font-size: 0.88rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  color: #e2f0e8;
+  font-style: italic;
+}
+
+.sidebar-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+}
+
+.sidebar-card__meta-item {
+  font-size: 0.8rem;
+  color: #bfa8e3;
+}
+
+.sidebar-card__cc {
+  font-size: 0.8rem;
+  color: #cd7e46;
+  border-top: 1px dashed rgba(215, 35, 45, 0.15);
+  margin-top: 8px;
+  padding-top: 6px;
+}
+
+/* Responsive sidebar behaviors */
+@media (max-width: 900px) {
+  .sidebar-container {
+    top: auto;
+    bottom: 16px;
+    width: calc(50% - 24px);
+    max-height: 45vh;
+    gap: 12px;
+  }
+
+  .sidebar-container--left {
+    left: 16px;
+  }
+
+  .sidebar-container--right {
+    right: 16px;
+  }
+
+  .sidebar-card {
+    padding: 12px;
+  }
+
+  .sidebar-card__title {
+    font-size: 0.95rem;
+  }
+
+  .sidebar-card__effect {
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar-container {
+    width: calc(100% - 32px);
+    left: 16px !important;
+    right: 16px !important;
+    max-height: 35vh;
+  }
+
+  .sidebar-container--left {
+    bottom: calc(35vh + 24px);
+  }
+
+  .sidebar-container--right {
+    bottom: 16px;
+  }
+}
