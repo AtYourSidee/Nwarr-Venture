@@ -1432,8 +1432,10 @@ function createTalentSearchResultCard(talent, query) {
   const highlightedEffect = highlightText(talent.effets, query);
 
   card.innerHTML = `
-    <span class="search-result-badge talent">Talent Naturel</span>
-    <div class="talent-card__header" style="padding-right: 120px;">
+    <div class="talent-card__header">
+      <div class="search-result-badge-container">
+        <span class="search-result-badge talent">Talent Naturel</span>
+      </div>
       <div class="talent-card__title">${highlightedName}</div>
       <span class="talent-card__icon">${emoji}</span>
     </div>
@@ -1467,8 +1469,10 @@ function createCompetenceSearchResultCard(comp, query) {
   }
 
   card.innerHTML = `
-    <span class="search-result-badge competence">Compétence</span>
-    <div class="arcane-card__header" style="padding-right: 120px;">
+    <div class="arcane-card__header">
+      <div class="search-result-badge-container">
+        <span class="search-result-badge competence">Compétence</span>
+      </div>
       <div class="arcane-card__title">${highlightedName}</div>
       <span class="arcane-card__type">${capitalize(type)}</span>
     </div>
@@ -1511,8 +1515,10 @@ function createEspritSearchResultCard(comp, query) {
   const genreText = genre === 'passif' ? 'Passif' : `${cout} PU`;
 
   card.innerHTML = `
-    <span class="search-result-badge esprit">Esprit: ${capitalize(esprit)}</span>
-    <div class="arcane-card__header" style="padding-right: 140px;">
+    <div class="arcane-card__header">
+      <div class="search-result-badge-container">
+        <span class="search-result-badge esprit">Esprit: ${capitalize(esprit)}</span>
+      </div>
       <div class="arcane-card__title">${highlightedName}</div>
       <span class="arcane-card__type" style="background: rgba(130, 80, 220, 0.25); border-color: rgba(130, 80, 220, 0.5); color: #d6c5f0;">
         ${capitalize(type)}
