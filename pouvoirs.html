@@ -46,8 +46,34 @@
       <div class="section-header">
         <h2 class="section-title">Résultats de recherche (<span id="search-results-count">0</span>)</h2>
       </div>
-      <div id="search-results-grid" class="search-results-grid">
-        <!-- Rempli dynamiquement por JS -->
+      
+      <!-- Sous-section Talents Naturels -->
+      <div id="search-results-talents-container" class="search-category-container" style="display: none; margin-bottom: 50px;">
+        <h3 class="search-category-title" style="font-size: 1.4rem; color: #ffd59a; text-transform: uppercase; margin-bottom: 20px; border-left: 3px solid #d7232d; padding-left: 12px; letter-spacing: 0.05em;">Talents Naturels</h3>
+        <div id="search-results-talents-grid" class="talents-grid"></div>
+      </div>
+
+      <!-- Sous-section Compétences Communes -->
+      <div id="search-results-competences-container" class="search-category-container" style="display: none; margin-bottom: 50px;">
+        <h3 class="search-category-title" style="font-size: 1.4rem; color: #ffd59a; text-transform: uppercase; margin-bottom: 20px; border-left: 3px solid #d7232d; padding-left: 12px; letter-spacing: 0.05em;">Compétences Communes</h3>
+        <div id="search-results-competences-grid" class="arcanes-grid"></div>
+      </div>
+
+      <!-- Sous-section Compétences d'Esprit -->
+      <div id="search-results-esprit-competences-container" class="search-category-container" style="display: none; margin-bottom: 50px;">
+        <h3 class="search-category-title" style="font-size: 1.4rem; color: #ffd59a; text-transform: uppercase; margin-bottom: 20px; border-left: 3px solid #d7232d; padding-left: 12px; letter-spacing: 0.05em;">Compétences d'Esprit</h3>
+        <div id="search-results-esprit-competences-grid" class="arcanes-grid"></div>
+      </div>
+
+      <!-- Sous-section Grands Esprits -->
+      <div id="search-results-esprits-container" class="search-category-container" style="display: none; margin-bottom: 50px;">
+        <h3 class="search-category-title" style="font-size: 1.4rem; color: #ffd59a; text-transform: uppercase; margin-bottom: 20px; border-left: 3px solid #d7232d; padding-left: 12px; letter-spacing: 0.05em;">Les Grands Esprits</h3>
+        <div id="search-results-esprits-grid" class="esprits-grid"></div>
+      </div>
+
+      <!-- Conteneur d'erreur/aucun résultat -->
+      <div id="search-no-results" class="error-message" style="display: none;">
+        <p>Aucun pouvoir ne correspond à votre recherche.</p>
       </div>
     </section>
 

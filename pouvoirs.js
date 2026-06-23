@@ -28,6 +28,7 @@ const typeEmojis = {
 let allCompetences = [];
 let allTalents = [];
 let allEspritCompetences = [];
+let allEsprits = [];
 let activeSpiritId = null;
 
 // ========================================
@@ -473,6 +474,7 @@ async function loadEsprits() {
 
   try {
     const data = await response.json();
+    allEsprits = data;
     renderEsprits(data);
   } catch (error) {
     console.error('Erreur pendant l’analyse JSON des esprits:', error);
@@ -1277,15 +1279,17 @@ function cleanStringForSearch(str) {
 
 function performSearch(query) {
   const cleanQuery = cleanStringForSearch(query);
-  const results = [];
+  const matchedTalents = [];
+  const matchedCompetences = [];
+  const matchedEspritCompetences = [];
+  const matchedEsprits = [];
 
   // 1. Recherche dans les talents naturels
   allTalents.forEach(talent => {
     const cleanNom = cleanStringForSearch(talent.nom);
     const cleanEffet = cleanStringForSearch(talent.effets);
     if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery)) {
-      results.push({
-        type: 'talent',
+      matchedTalents.push({
         data: talent,
         score: cleanNom.startsWith(cleanQuery) ? 2 : 1
       });
@@ -1298,8 +1302,7 @@ function performSearch(query) {
     const cleanEffet = cleanStringForSearch(comp.effet);
     const cleanType = cleanStringForSearch(comp.type);
     if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery) || cleanType.includes(cleanQuery)) {
-      results.push({
-        type: 'competence',
+      matchedCompetences.push({
         data: comp,
         score: cleanNom.startsWith(cleanQuery) ? 2 : 1
       });
@@ -1313,51 +1316,112 @@ function performSearch(query) {
     const cleanType = cleanStringForSearch(comp.type);
     const cleanEsprit = cleanStringForSearch(comp.esprit);
     if (cleanNom.includes(cleanQuery) || cleanEffet.includes(cleanQuery) || cleanType.includes(cleanQuery) || cleanEsprit.includes(cleanQuery)) {
-      results.push({
-        type: 'esprit',
+      matchedEspritCompetences.push({
         data: comp,
         score: cleanNom.startsWith(cleanQuery) ? 2 : 1
       });
     }
   });
 
-  // Trier par pertinence (les correspondances en début de nom d'abord)
-  results.sort((a, b) => b.score - a.score);
+  // 4. Recherche dans les esprits eux-mêmes
+  allEsprits.forEach(esprit => {
+    const cleanNom = cleanStringForSearch(esprit.nom);
+    const cleanIntro = cleanStringForSearch(esprit.intro);
+    const cleanCapNom = cleanStringForSearch(esprit.capacite_nom);
+    const cleanCapEffet = cleanStringForSearch(esprit.capacite_effet);
+    
+    let match = cleanNom.includes(cleanQuery) || 
+                cleanIntro.includes(cleanQuery) || 
+                cleanCapNom.includes(cleanQuery) || 
+                cleanCapEffet.includes(cleanQuery) ||
+                cleanStringForSearch(esprit.stats_depart).includes(cleanQuery) ||
+                cleanStringForSearch(esprit.competence_depart).includes(cleanQuery) ||
+                cleanStringForSearch(esprit.passive_depart).includes(cleanQuery);
+    
+    if (!match && Array.isArray(esprit.evolutions)) {
+      match = esprit.evolutions.some(evo => 
+        cleanStringForSearch(evo.stats).includes(cleanQuery) ||
+        cleanStringForSearch(evo.competence).includes(cleanQuery) ||
+        cleanStringForSearch(evo.passive).includes(cleanQuery)
+      );
+    }
+    
+    if (match) {
+      matchedEsprits.push({
+        data: esprit,
+        score: cleanNom.startsWith(cleanQuery) ? 2 : 1
+      });
+    }
+  });
 
-  displaySearchResults(results, query);
+  // Trier chaque catégorie par pertinence (score)
+  matchedTalents.sort((a, b) => b.score - a.score);
+  matchedCompetences.sort((a, b) => b.score - a.score);
+  matchedEspritCompetences.sort((a, b) => b.score - a.score);
+  matchedEsprits.sort((a, b) => b.score - a.score);
+
+  displaySearchResults({
+    talents: matchedTalents.map(r => r.data),
+    competences: matchedCompetences.map(r => r.data),
+    espritCompetences: matchedEspritCompetences.map(r => r.data),
+    esprits: matchedEsprits.map(r => r.data)
+  }, query);
 }
 
-function displaySearchResults(results, query) {
+function displaySearchResults(groupedResults, query) {
   const resultsSection = document.getElementById('search-results-section');
-  const resultsGrid = document.getElementById('search-results-grid');
-  const resultsCount = document.getElementById('search-results-count');
+  const resultsCountEl = document.getElementById('search-results-count');
+  const noResultsEl = document.getElementById('search-no-results');
 
-  if (!resultsSection || !resultsGrid) return;
+  if (!resultsSection) return;
 
-  resultsGrid.innerHTML = '';
-  if (resultsCount) resultsCount.textContent = results.length;
   resultsSection.style.display = 'block';
-
-  // Masquer les sections par défaut pour se concentrer sur la recherche
   toggleDefaultSections(false);
 
-  if (results.length === 0) {
-    resultsGrid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; margin: 20px 0;"><p>Aucun pouvoir ne correspond à votre recherche.</p></div>';
+  const totalCount = groupedResults.talents.length + 
+                     groupedResults.competences.length + 
+                     groupedResults.espritCompetences.length + 
+                     groupedResults.esprits.length;
+
+  if (resultsCountEl) resultsCountEl.textContent = totalCount;
+
+  if (totalCount === 0) {
+    if (noResultsEl) noResultsEl.style.display = 'block';
+    ['talents', 'competences', 'esprit-competences', 'esprits'].forEach(cat => {
+      const container = document.getElementById(`search-results-${cat}-container`);
+      if (container) container.style.display = 'none';
+    });
     return;
   }
 
-  results.forEach((result, index) => {
-    let card;
-    if (result.type === 'talent') {
-      card = createTalentSearchResultCard(result.data, query);
-    } else if (result.type === 'competence') {
-      card = createCompetenceSearchResultCard(result.data, query);
-    } else {
-      card = createEspritSearchResultCard(result.data, query);
-    }
-    
+  if (noResultsEl) noResultsEl.style.display = 'none';
+
+  // Rendre chaque catégorie de résultats
+  renderCategoryResults('talents', groupedResults.talents, (data) => createTalentSearchResultCard(data, query));
+  renderCategoryResults('competences', groupedResults.competences, (data) => createCompetenceSearchResultCard(data, query));
+  renderCategoryResults('esprit-competences', groupedResults.espritCompetences, (data) => createEspritSearchResultCard(data, query));
+  renderCategoryResults('esprits', groupedResults.esprits, (data) => createEspritCard(data));
+}
+
+function renderCategoryResults(categoryId, items, cardCreator) {
+  const container = document.getElementById(`search-results-${categoryId}-container`);
+  const grid = document.getElementById(`search-results-${categoryId}-grid`);
+
+  if (!container || !grid) return;
+
+  if (items.length === 0) {
+    container.style.display = 'none';
+    grid.innerHTML = '';
+    return;
+  }
+
+  container.style.display = 'block';
+  grid.innerHTML = '';
+
+  items.forEach((item, index) => {
+    const card = cardCreator(item);
     card.classList.add('fade-in');
-    resultsGrid.appendChild(card);
+    grid.appendChild(card);
     card.style.animationDelay = `${index * 0.03}s`;
 
     card.addEventListener('animationend', function handleEntranceEnd(e) {
@@ -1372,11 +1436,19 @@ function displaySearchResults(results, query) {
 
 function resetSearch() {
   const resultsSection = document.getElementById('search-results-section');
-  const resultsGrid = document.getElementById('search-results-grid');
-  
   if (resultsSection) resultsSection.style.display = 'none';
-  if (resultsGrid) resultsGrid.innerHTML = '';
-  
+
+  const categories = ['talents', 'competences', 'esprit-competences', 'esprits'];
+  categories.forEach(cat => {
+    const container = document.getElementById(`search-results-${cat}-container`);
+    const grid = document.getElementById(`search-results-${cat}-grid`);
+    if (container) container.style.display = 'none';
+    if (grid) grid.innerHTML = '';
+  });
+
+  const noResults = document.getElementById('search-no-results');
+  if (noResults) noResults.style.display = 'none';
+
   toggleDefaultSections(true);
 }
 
