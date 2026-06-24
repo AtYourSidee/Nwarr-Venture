@@ -1095,25 +1095,26 @@ function setupEspritTooltips() {
       card.className = 'sidebar-card';
       card.setAttribute('data-type', details.type || '');
       card.setAttribute('data-norm-name', normName);
+      card.style.cursor = 'pointer';
       card.innerHTML = generateSidebarCardHTML(details);
 
-      // Close button listener
-      const closeBtn = card.querySelector('.sidebar-card__close');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          card.classList.add('fade-out');
-          let removed = false;
-          const removeCard = () => {
-            if (removed) return;
-            removed = true;
-            card.remove();
-            checkActiveSpiritReset();
-          };
-          card.addEventListener('transitionend', removeCard);
-          setTimeout(removeCard, 450); // Fallback if transitionend is blocked
-        });
-      }
+      // Fermeture au clic sur la carte elle-même
+      card.addEventListener('click', (ev) => {
+        // Empêcher la fermeture si on clique sur un mot-clé d'altération
+        if (ev.target.closest('.interactive-status')) return;
+
+        ev.stopPropagation();
+        card.classList.add('fade-out');
+        let removed = false;
+        const removeCard = () => {
+          if (removed) return;
+          removed = true;
+          card.remove();
+          checkActiveSpiritReset();
+        };
+        card.addEventListener('transitionend', removeCard);
+        setTimeout(removeCard, 450); // Fallback
+      });
 
       targetContainer.appendChild(card);
     }
@@ -1167,27 +1168,28 @@ function showAllSpiritDetails(esprit) {
       card.className = 'sidebar-card';
       card.setAttribute('data-type', details.type || '');
       card.setAttribute('data-norm-name', normName);
+      card.style.cursor = 'pointer';
       card.innerHTML = generateSidebarCardHTML(details);
 
-      // Gestionnaire de fermeture de la carte individuelle
-      const closeBtn = card.querySelector('.sidebar-card__close');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          card.classList.add('fade-out');
-          let removed = false;
-          const removeCard = () => {
-            if (removed) return;
-            removed = true;
-            card.remove();
-            if (leftContainer.children.length === 0 && rightContainer.children.length === 0) {
-              activeSpiritId = null;
-            }
-          };
-          card.addEventListener('transitionend', removeCard);
-          setTimeout(removeCard, 450);
-        });
-      }
+      // Gestionnaire de fermeture au clic sur la carte elle-même
+      card.addEventListener('click', (ev) => {
+        // Empêcher la fermeture si on clique sur un mot-clé d'altération
+        if (ev.target.closest('.interactive-status')) return;
+
+        ev.stopPropagation();
+        card.classList.add('fade-out');
+        let removed = false;
+        const removeCard = () => {
+          if (removed) return;
+          removed = true;
+          card.remove();
+          if (leftContainer.children.length === 0 && rightContainer.children.length === 0) {
+            activeSpiritId = null;
+          }
+        };
+        card.addEventListener('transitionend', removeCard);
+        setTimeout(removeCard, 450);
+      });
 
       targetContainer.appendChild(card);
     }
@@ -1232,7 +1234,6 @@ function generateSidebarCardHTML(details) {
   }
 
   return `
-    <button class="sidebar-card__close" aria-label="Fermer">&times;</button>
     <div class="sidebar-card__header">
       <span class="sidebar-card__title">${capitalize(details.nom)}</span>
       ${puText}
@@ -1638,7 +1639,8 @@ function createEspritSearchResultCard(comp, query) {
 function createStatusSearchResultCard(status, query) {
   const card = document.createElement('div');
   const type = getStatusType(status.Nom);
-  card.className = 'talent-card';
+  const normName = normalizeName(status.Nom);
+  card.className = `talent-card status-search-card status-${normName}`;
   card.setAttribute('data-type', type);
   card.style.cursor = 'default';
 
@@ -1664,68 +1666,91 @@ function createStatusSearchResultCard(status, query) {
 }
 
 function getStatusType(nom) {
-  const lowerNom = nom.toLowerCase().trim();
-  if (lowerNom.includes('poison')) return 'soutien'; // green
-  if (lowerNom.includes('brulure') || lowerNom.includes('terror') || lowerNom.includes('hemorragie') || lowerNom.includes('marque')) return 'attaque'; // red
-  if (lowerNom.includes('lenteur') || lowerNom.includes('confusion')) return 'magie'; // blue
-  if (lowerNom.includes('affaiblissement') || lowerNom.includes('choc') || lowerNom.includes('bouclier')) return 'défense'; // gold
+  const normalized = normalizeName(nom);
+  if (normalized.includes('poison')) return 'soutien'; // green
+  if (normalized.includes('brulure') || normalized.includes('terreur') || normalized.includes('hemorragie') || normalized.includes('marque')) return 'attaque'; // red
+  if (normalized.includes('lenteur') || normalized.includes('confusion')) return 'magie'; // blue
+  if (normalized.includes('affaiblissement') || normalized.includes('choc') || normalized.includes('bouclier')) return 'défense'; // gold
   return 'soutien';
 }
 
 function getStatusEmoji(nom) {
-  const lowerNom = nom.toLowerCase().trim();
-  if (lowerNom.includes('poison')) return '🤢';
-  if (lowerNom.includes('brulure')) return '🔥';
-  if (lowerNom.includes('lenteur')) return '⏳';
-  if (lowerNom.includes('confusion')) return '🌀';
-  if (lowerNom.includes('affaiblissement')) return '🩹';
-  if (lowerNom.includes('terreur')) return '😱';
-  if (lowerNom.includes('hemorragie')) return '🩸';
-  if (lowerNom.includes('choc')) return '⚡';
-  if (lowerNom.includes('marque')) return '🎯';
-  if (lowerNom.includes('bouclier')) return '🛡️';
+  const normalized = normalizeName(nom);
+  if (normalized.includes('poison')) return '🤢';
+  if (normalized.includes('brulure')) return '🔥';
+  if (normalized.includes('lenteur')) return '⏳';
+  if (normalized.includes('confusion')) return '🌀';
+  if (normalized.includes('affaiblissement')) return '🩹';
+  if (normalized.includes('terreur')) return '😱';
+  if (normalized.includes('hemorragie')) return '🩸';
+  if (normalized.includes('choc')) return '⚡';
+  if (normalized.includes('marque')) return '🎯';
+  if (normalized.includes('bouclier')) return '🛡️';
   return '⚠️';
 }
 
-function openStatusSidebar(statusInfo) {
+function openStatusSidebar(statusInfo, clickedElement) {
   const leftContainer = document.getElementById('passifs-sidebar-container');
   const rightContainer = document.getElementById('competences-sidebar-container');
   if (!leftContainer || !rightContainer) return;
 
   const normName = normalizeName(statusInfo.Nom);
 
-  leftContainer.innerHTML = '';
-  rightContainer.innerHTML = '';
-
-  const card = document.createElement('div');
-  card.className = `sidebar-card status-${normName}`;
-  card.setAttribute('data-type', 'status');
-  card.setAttribute('data-norm-name', normName);
-
-  card.innerHTML = `
-    <button class="sidebar-card__close" aria-label="Fermer">&times;</button>
-    <div class="sidebar-card__header">
-      <span class="sidebar-card__title">${statusInfo.Nom}</span>
-      <span class="sidebar-card__duration">${statusInfo.durée || 'Spécial'}</span>
-    </div>
-    <div class="sidebar-card__type-row">
-      <span class="sidebar-card__type-badge" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff;">Altération d'État</span>
-    </div>
-    <div class="sidebar-card__effect">${statusInfo.Effets}</div>
-  `;
-
-  const closeBtn = card.querySelector('.sidebar-card__close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      card.classList.add('fade-out');
-      const removeCard = () => card.remove();
-      card.addEventListener('transitionend', removeCard);
-      setTimeout(removeCard, 450);
-    });
+  // Vérifier si cette altération est déjà affichée
+  const existingCard = document.querySelector(`.status-sidebar-card.status-${normName}`);
+  if (existingCard) {
+    // Si oui, on la ferme (comportement d'Afficher/Masquer)
+    existingCard.classList.add('fade-out');
+    const removeCard = () => existingCard.remove();
+    existingCard.addEventListener('transitionend', removeCard);
+    setTimeout(removeCard, 450);
+    return;
   }
 
-  leftContainer.appendChild(card);
+  // Créer la nouvelle carte avec le design de recherche (status-sidebar-card, compacte)
+  const card = document.createElement('div');
+  const type = getStatusType(statusInfo.Nom);
+  card.className = `status-sidebar-card status-${normName}`;
+  card.setAttribute('data-type', type);
+  card.setAttribute('data-norm-name', normName);
+
+  const emoji = getStatusEmoji(statusInfo.Nom);
+  const title = capitalize(statusInfo.Nom);
+  const effects = statusInfo.Effets || 'Aucun effet spécifié';
+  const duree = statusInfo.durée || 'Spécial';
+
+  card.innerHTML = `
+    <div class="talent-card__header">
+      <div class="talent-card__title">${title}</div>
+      <span class="talent-card__icon">${emoji}</span>
+    </div>
+    <div class="talent-card__effect" style="margin-top: 10px; line-height: 1.5;">
+      ${effects}
+      <span style="font-size: 0.8rem; opacity: 0.7; display: block; margin-top: 8px; font-weight: 600; color: var(--star-gold);">
+        Durée : ${duree}
+      </span>
+    </div>
+  `;
+
+  // Permettre de fermer la carte en cliquant dessus
+  card.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    card.classList.add('fade-out');
+    const removeCard = () => card.remove();
+    card.addEventListener('transitionend', removeCard);
+    setTimeout(removeCard, 450);
+  });
+
+  // Déterminer le conteneur cible : si le clic a eu lieu dans une sidebar, on l'y ajoute, sinon par défaut à gauche
+  const targetContainer = (clickedElement && clickedElement.closest('.sidebar-container')) || leftContainer;
+
+  // Si le clic a eu lieu dans une carte existante de la sidebar, insérer l'altération directement après celle-ci
+  const parentCard = clickedElement ? clickedElement.closest('.sidebar-card, .talent-card') : null;
+  if (parentCard && parentCard.parentNode === targetContainer) {
+    targetContainer.insertBefore(card, parentCard.nextSibling);
+  } else {
+    targetContainer.appendChild(card);
+  }
 }
 
 function makeStatusInteractive(text) {
@@ -1762,6 +1787,6 @@ document.addEventListener('click', (e) => {
 
   const statusInfo = allStatusEffects.find(s => normalizeName(s.Nom) === normalizeName(statusName));
   if (statusInfo) {
-    openStatusSidebar(statusInfo);
+    openStatusSidebar(statusInfo, target);
   }
 });

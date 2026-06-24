@@ -622,6 +622,12 @@
   border-color: rgba(100, 200, 120, 0.3);
 }
 
+.inventory-item__badge.artefact {
+  background: rgba(168, 85, 247, 0.1);
+  color: #d6c5f0;
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
 /* responsive combined card columns */
 @media (max-width: 768px) {
   .combined-layout {

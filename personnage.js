@@ -20,6 +20,7 @@ let allTalents = [];
 let allEsprits = [];
 let allEspritCompetences = [];
 let allStatusEffects = [];
+let allGameObjects = { consommables: [], équipements: [], artefacts: [] };
 let supabaseClient = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -116,6 +117,18 @@ async function loadGameData() {
     }
   } catch (err) {
     console.warn('Impossible de charger les altérations d\'états.', err);
+  }
+
+  try {
+    let objectsRes = await fetch('data/Objets.json');
+    if (!objectsRes.ok) {
+      objectsRes = await fetch('Objets.json');
+    }
+    if (objectsRes.ok) {
+      allGameObjects = await objectsRes.json();
+    }
+  } catch (err) {
+    console.warn('Impossible de charger les objets.', err);
   }
 }
 
@@ -363,25 +376,20 @@ async function fetchCharacterFromSupabase(username) {
           };
         });
 
-        // Formater l'inventaire et déterminer dynamiquement les bonus de statistiques des équipements
+        // Formater l'inventaire en cherchant les objets dans le fichier Objets.json
         const invStr = userRow["Inventaire"] || userRow["Inventaire "] || "";
         const inventory = invStr.split('\n').map(i => i.replace(/[•\-\*]/g, '').trim()).filter(Boolean).map(nom => {
+          const details = findObjectDetails(nom);
+          if (details) return details;
+
+          // Fallback si l'objet n'est pas dans le JSON
           const lowerNom = nom.toLowerCase();
           const isEquip = lowerNom.includes('épée') || lowerNom.includes('plastron') || lowerNom.includes('bottes') || lowerNom.includes('anneau') || lowerNom.includes('dague') || lowerNom.includes('bouclier') || lowerNom.includes('katana') || lowerNom.includes('arc') || lowerNom.includes('bâton') || lowerNom.includes('hache') || lowerNom.includes('écu');
-
-          let statDesc = "Objet consommable de l'aventure.";
-          if (isEquip) {
-            if (lowerNom.includes('épée') || lowerNom.includes('katana') || lowerNom.includes('hache')) statDesc = '+3 Puissance (DEG)';
-            else if (lowerNom.includes('dague')) statDesc = '+1 Puissance (DEG), +1 Vitesse (VIT)';
-            else if (lowerNom.includes('bouclier') || lowerNom.includes('écu') || lowerNom.includes('plastron')) statDesc = '+2 Résistance (DEF)';
-            else if (lowerNom.includes('bottes')) statDesc = '+2 Vitesse (VIT)';
-            else if (lowerNom.includes('anneau') || lowerNom.includes('collier')) statDesc = '+5 Points de Vie (PV)';
-            else statDesc = '+2 Caractéristique';
-          }
           return {
             nom: nom,
             type: isEquip ? "equipement" : "consommable",
-            stat: statDesc
+            stat: isEquip ? "+2 Caractéristique" : "Objet consommable de l'aventure.",
+            badgeText: isEquip ? "Équipement" : "Consommable"
           };
         });
 
@@ -559,18 +567,50 @@ function generateDeterministicCharacter(username) {
     skills.push({ compétence: 'Soins légers', type: 'soutien', effet: 'Soigne 5 pv + la moitié de votre puissance' });
   }
 
-  // 5. Déterminer l'inventaire (3-4 items aléatoires parmi une liste prédéfinie)
-  const availableItems = [
-    { nom: "Épée émoussée", type: "equipement", stat: "+2 Puissance (DEG)" },
-    { nom: "Plastron en cuir renforcé", type: "equipement", stat: "+3 Résistance (DEF)" },
-    { nom: "Bottes légères de voyage", type: "equipement", stat: "+2 Vitesse (VIT)" },
-    { nom: "Anneau de vitalité", type: "equipement", stat: "+5 Points de Vie (PV)" },
-    { nom: "Dague rouillée", type: "equipement", stat: "+1 Puissance (DEG), +1 Vitesse (VIT)" },
-    { nom: "Bouclier en bois fendu", type: "equipement", stat: "+2 Résistance (DEF)" },
-    { nom: "Potion de soin", type: "consommable", stat: "Restaure 15 Points de Vie en combat." },
-    { nom: "Élixir de célérité", type: "consommable", stat: "Octroie +5 Vitesse pendant 3 tours." },
-    { nom: "Herbes médicinales", type: "consommable", stat: "Soigne le poison mineur et restaure 5 PV." }
-  ];
+  // 5. Déterminer l'inventaire (3-4 items aléatoires parmi le fichier Objets.json si possible, sinon fallback)
+  const availableItems = [];
+
+  if (allGameObjects.consommables && allGameObjects.consommables.length > 0) {
+    allGameObjects.consommables.forEach(i => {
+      availableItems.push({
+        nom: i.consommable,
+        type: "consommable",
+        stat: i.effet,
+        badgeText: i.type || "Consommable"
+      });
+    });
+  }
+  if (allGameObjects.équipements && allGameObjects.équipements.length > 0) {
+    allGameObjects.équipements.forEach(i => {
+      availableItems.push({
+        nom: i.équipement,
+        type: "equipement",
+        stat: i.effet,
+        badgeText: i.type || "Équipement"
+      });
+    });
+  }
+  if (allGameObjects.artefacts && allGameObjects.artefacts.length > 0) {
+    allGameObjects.artefacts.forEach(i => {
+      availableItems.push({
+        nom: i.artefact,
+        type: "artefact",
+        stat: i.effet,
+        badgeText: i.type || "Artefact"
+      });
+    });
+  }
+
+  // Fallback si allGameObjects est vide
+  if (availableItems.length === 0) {
+    availableItems.push(
+      { nom: "Épée émoussée", type: "equipement", stat: "+2 Puissance (DEG)", badgeText: "Équipement" },
+      { nom: "Plastron en cuir renforcé", type: "equipement", stat: "+3 Résistance (DEF)", badgeText: "Équipement" },
+      { nom: "Bottes légères de voyage", type: "equipement", stat: "+2 Vitesse (VIT)", badgeText: "Équipement" },
+      { nom: "Anneau de vitalité", type: "equipement", stat: "+5 Points de Vie (PV)", badgeText: "Équipement" },
+      { nom: "Potion de soin", type: "consommable", stat: "Restaure 15 Points de Vie en combat.", badgeText: "Consommable" }
+    );
+  }
 
   const inventory = [];
   const itemCount = 3 + (hash % 2); // 3 ou 4 objets
@@ -687,11 +727,12 @@ function renderInventory(inventory) {
     itemEl.className = 'inventory-item';
 
     const isEquip = item.type === 'equipement';
-    const badgeText = isEquip ? 'Équipement' : 'Consommable';
-    const badgeClass = isEquip ? 'equipement' : 'consommable';
+    const isArtefact = item.type === 'artefact';
+    const badgeText = item.badgeText || (isEquip ? 'Équipement' : (isArtefact ? 'Artefact' : 'Consommable'));
+    const badgeClass = item.type || (isEquip ? 'equipement' : (isArtefact ? 'artefact' : 'consommable'));
 
-    // Si c'est un équipement, la description/stat modifiée sera colorée spécifiquement
-    const statLine = isEquip
+    // Si c'est un équipement ou artefact, la description/stat modifiée sera colorée spécifiquement
+    const statLine = (isEquip || isArtefact)
       ? `<span class="inventory-item__stat">${makeStatusInteractive(item.stat)}</span>`
       : `<span class="deck-item__effect">${makeStatusInteractive(item.stat)}</span>`;
 
@@ -760,41 +801,133 @@ document.addEventListener('click', (e) => {
   const rightContainer = document.getElementById('competences-sidebar-container');
   if (!leftContainer || !rightContainer) return;
 
-  const isLeftClick = e.clientX < window.innerWidth / 2;
-  const targetContainer = isLeftClick ? leftContainer : rightContainer;
   const normName = normalizeName(statusInfo.Nom);
 
-  leftContainer.innerHTML = '';
-  rightContainer.innerHTML = '';
+  // Vérifier si cette altération est déjà affichée
+  const existingCard = document.querySelector(`.status-sidebar-card.status-${normName}`);
+  if (existingCard) {
+    // Si oui, on la ferme (comportement d'Afficher/Masquer)
+    existingCard.classList.add('fade-out');
+    const removeCard = () => existingCard.remove();
+    existingCard.addEventListener('transitionend', removeCard);
+    setTimeout(removeCard, 450);
+    return;
+  }
 
+  // Créer la nouvelle carte avec le design de recherche (status-sidebar-card, compacte)
   const card = document.createElement('div');
-  card.className = `sidebar-card status-${normName}`;
-  card.setAttribute('data-type', 'status');
+  const type = getStatusType(statusInfo.Nom);
+  card.className = `status-sidebar-card status-${normName}`;
+  card.setAttribute('data-type', type);
   card.setAttribute('data-norm-name', normName);
 
+  const emoji = getStatusEmoji(statusInfo.Nom);
+  const title = capitalize(statusInfo.Nom);
+  const effects = statusInfo.Effets || 'Aucun effet spécifié';
+  const duree = statusInfo.durée || 'Spécial';
+
   card.innerHTML = `
-    <button class="sidebar-card__close" aria-label="Fermer">&times;</button>
-    <div class="sidebar-card__header">
-      <span class="sidebar-card__title">${statusInfo.Nom}</span>
-      <span class="sidebar-card__duration">${statusInfo.durée || 'Spécial'}</span>
+    <div class="talent-card__header">
+      <div class="talent-card__title">${title}</div>
+      <span class="talent-card__icon">${emoji}</span>
     </div>
-    <div class="sidebar-card__type-row">
-      <span class="sidebar-card__type-badge" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff;">Altération d'État</span>
+    <div class="talent-card__effect" style="margin-top: 10px; line-height: 1.5;">
+      ${effects}
+      <span style="font-size: 0.8rem; opacity: 0.7; display: block; margin-top: 8px; font-weight: 600; color: var(--star-gold);">
+        Durée : ${duree}
+      </span>
     </div>
-    <div class="sidebar-card__effect">${statusInfo.Effets}</div>
   `;
 
-  const closeBtn = card.querySelector('.sidebar-card__close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      card.classList.add('fade-out');
-      const removeCard = () => card.remove();
-      card.addEventListener('transitionend', removeCard);
-      setTimeout(removeCard, 450);
-    });
+  // Permettre de fermer la carte en cliquant dessus
+  card.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    card.classList.add('fade-out');
+    const removeCard = () => card.remove();
+    card.addEventListener('transitionend', removeCard);
+    setTimeout(removeCard, 450);
+  });
+
+  // Déterminer le conteneur cible : si dans une sidebar, on l'y ajoute, sinon par position écran
+  let targetContainer = target.closest('.sidebar-container');
+  if (!targetContainer) {
+    const isLeftClick = e.clientX < window.innerWidth / 2;
+    targetContainer = isLeftClick ? leftContainer : rightContainer;
   }
 
   targetContainer.appendChild(card);
 });
+
+// Fonctions utilitaires pour le traitement des altérations
+function getStatusType(nom) {
+  const normalized = normalizeName(nom);
+  if (normalized.includes('poison')) return 'soutien'; // green
+  if (normalized.includes('brulure') || normalized.includes('terreur') || normalized.includes('hemorragie') || normalized.includes('marque')) return 'attaque'; // red
+  if (normalized.includes('lenteur') || normalized.includes('confusion')) return 'magie'; // blue
+  if (normalized.includes('affaiblissement') || normalized.includes('choc') || normalized.includes('bouclier')) return 'défense'; // gold
+  return 'soutien';
+}
+
+function getStatusEmoji(nom) {
+  const normalized = normalizeName(nom);
+  if (normalized.includes('poison')) return '🤢';
+  if (normalized.includes('brulure')) return '🔥';
+  if (normalized.includes('lenteur')) return '⏳';
+  if (normalized.includes('confusion')) return '🌀';
+  if (normalized.includes('affaiblissement')) return '🩹';
+  if (normalized.includes('terreur')) return '😱';
+  if (normalized.includes('hemorragie')) return '🩸';
+  if (normalized.includes('choc')) return '⚡';
+  if (normalized.includes('marque')) return '🎯';
+  if (normalized.includes('bouclier')) return '🛡️';
+  return '⚠️';
+}
+
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+function findObjectDetails(name) {
+  const normSearch = normalizeName(name);
+  if (!normSearch) return null;
+
+  if (allGameObjects.consommables) {
+    const item = allGameObjects.consommables.find(i => normalizeName(i.consommable) === normSearch);
+    if (item) {
+      return {
+        nom: item.consommable,
+        type: "consommable",
+        stat: item.effet,
+        badgeText: item.type || "Consommable"
+      };
+    }
+  }
+
+  if (allGameObjects.équipements) {
+    const item = allGameObjects.équipements.find(i => normalizeName(i.équipement) === normSearch);
+    if (item) {
+      return {
+        nom: item.équipement,
+        type: "equipement",
+        stat: item.effet,
+        badgeText: item.type || "Équipement"
+      };
+    }
+  }
+
+  if (allGameObjects.artefacts) {
+    const item = allGameObjects.artefacts.find(i => normalizeName(i.artefact) === normSearch);
+    if (item) {
+      return {
+        nom: item.artefact,
+        type: "artefact",
+        stat: item.effet,
+        badgeText: item.type || "Artefact"
+      };
+    }
+  }
+
+  return null;
+}
 

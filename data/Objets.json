@@ -1,52 +1,53 @@
 {
-    "consommables": [
-        {
-            "consommable": "Potion de soin",
-            "type": "Potion",
-            "effet": "Soignez un membre de votre équipe de 10 pv",
-	},
-	{
-	    "consommable": "Antidote",
-	    "type": "Potion",
-	    "effet": "Soignez un membre de votre équipe d'une altération d'état",
-	},
-	{
-	    "consommable": "Potion mystique",
-	    "type": "Potion",
-	    "effet": "Vous pouvez tourner la roue des miracles",
-	}
-    ],
-    "équipements": [
-	{
-	    "équipement": "Dague en acier",
-	    "type": "Arme physique",
-            "effet": "Puissance +2",
-	},
-	{
-	    "équipement": "Katana",
-	    "type": "Arme physique",
-	    "effet": "Puissance +5 et Vitesse +3",
-	},
-	{
-	    "équipement": "Anneau de force",
-	    "type": "Ornement",
-	    "effet": "Puissance +7 et Vitesse +2",
-	},
-	{
-	    "équipement": "Anneau de sagesse",
-	    "type": "Ornement",
-	    "effet": "Pv +8, Puissance +3 et Vitesse +3",
-	},
-	{
-	    "équipement": "Anneau de courage",
-	    "type": "Ornement",
-	    "effet": "Pv +6 et Vitesse +7",
-	}
-    ],
-    "artefacts": [
-	{
-	    "artefact": "Parchemin magique",
-	    "type" : "Relique",
-	    "effet" : "Vous pouvez tourner la roue des compétences, ou, augmenter le niveau d'une de vos compétences",
-	},
-	{
+	"consommables": [
+		{
+			"consommable": "Potion de soin",
+			"type": "Potion",
+			"effet": "Soignez un membre de votre équipe de 10 pv"
+		},
+		{
+			"consommable": "Antidote",
+			"type": "Potion",
+			"effet": "Soignez un membre de votre équipe d'une altération d'état"
+		},
+		{
+			"consommable": "Potion mystique",
+			"type": "Potion",
+			"effet": "Vous pouvez tourner la roue des miracles"
+		}
+	],
+	"équipements": [
+		{
+			"équipement": "Dague en acier",
+			"type": "Arme physique",
+			"effet": "Puissance +2"
+		},
+		{
+			"équipement": "Katana",
+			"type": "Arme physique",
+			"effet": "Puissance +5 et Vitesse +3"
+		},
+		{
+			"équipement": "Anneau de force",
+			"type": "Ornement",
+			"effet": "Puissance +7 et Vitesse +2"
+		},
+		{
+			"équipement": "Anneau de sagesse",
+			"type": "Ornement",
+			"effet": "Pv +8, Puissance +3 et Vitesse +3"
+		},
+		{
+			"équipement": "Anneau de courage",
+			"type": "Ornement",
+			"effet": "Pv +6 et Vitesse +7"
+		}
+	],
+	"artefacts": [
+		{
+			"artefact": "Parchemin magique",
+			"type": "Relique",
+			"effet": "Vous pouvez tourner la roue des compétences, ou, augmenter le niveau d'une de vos compétences"
+		}
+	]
+}

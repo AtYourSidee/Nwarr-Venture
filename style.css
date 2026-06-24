@@ -361,12 +361,12 @@ body {
   width: 320px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
   z-index: 1000;
   pointer-events: none;
   overflow-y: auto;
-  padding: 10px;
+  padding: 20px 10px;
   scrollbar-width: thin;
   scrollbar-color: rgba(130, 80, 220, 0.3) transparent;
 }
@@ -688,15 +688,17 @@ body {
 }
 
 .status-affaiblissement {
-  color: #eab308;
-  text-decoration-color: rgba(234, 179, 8, 0.4);
-  background: rgba(234, 179, 8, 0.1);
+  color: #c5b390;
+  /* Faded gold-brown for debility/weakness */
+  text-decoration-color: rgba(197, 179, 144, 0.4);
+  background: rgba(197, 179, 144, 0.1);
 }
 
 .status-terreur {
-  color: #ef4444;
-  text-decoration-color: rgba(239, 68, 68, 0.4);
-  background: rgba(239, 68, 68, 0.1);
+  color: #94a3b8;
+  /* Slate grey representing ghostly dread */
+  text-decoration-color: rgba(148, 163, 184, 0.4);
+  background: rgba(148, 163, 184, 0.1);
 }
 
 .status-hemorragie {
@@ -723,60 +725,461 @@ body {
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* Sidebar card overrides for status */
-.sidebar-card[data-type="status"] {
-  border-color: rgba(160, 100, 255, 0.5);
+/* ========================================
+   UNIFIED STATUS SIDEBAR CARDS (TALENT CARD STYLE)
+   ======================================== */
+.status-sidebar-card {
+  position: relative;
+  pointer-events: auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.96), rgba(10, 10, 10, 0.98));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.7),
-    0 0 15px rgba(160, 100, 255, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.35s, box-shadow 0.35s;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+  animation: sidebarCardSlideIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  cursor: pointer;
+  /* Click to close */
 }
 
-.sidebar-card[data-type="status"].status-poison {
+.status-sidebar-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.status-sidebar-card.fade-out {
+  animation: sidebarCardSlideOut 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  pointer-events: none;
+}
+
+/* Adjust layout spacing inside status-sidebar-card to keep it compact */
+.status-sidebar-card .talent-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.status-sidebar-card .talent-card__title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #f8f4e8;
+  letter-spacing: 0.02em;
+}
+
+.status-sidebar-card .talent-card__icon {
+  font-size: 1.2rem;
+  padding: 4px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.status-sidebar-card .talent-card__effect {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #e2f0e8;
+  font-style: italic;
+}
+
+/* --- Theme variations matching exactly status keyword colors --- */
+
+/* Poison - Green */
+.status-sidebar-card.status-poison {
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.status-sidebar-card.status-poison .talent-card__header {
+  border-bottom-color: rgba(16, 185, 129, 0.25);
+}
+
+.status-sidebar-card.status-poison .talent-card__icon {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.status-sidebar-card.status-poison:hover {
+  border-color: rgba(16, 185, 129, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.35);
+}
+
+/* Brûlure - Orange */
+.status-sidebar-card.status-brulure {
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+.status-sidebar-card.status-brulure .talent-card__header {
+  border-bottom-color: rgba(249, 115, 22, 0.25);
+}
+
+.status-sidebar-card.status-brulure .talent-card__icon {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.status-sidebar-card.status-brulure:hover {
+  border-color: rgba(249, 115, 22, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(249, 115, 22, 0.35);
+}
+
+/* Lenteur - Cyan */
+.status-sidebar-card.status-lenteur {
+  border-color: rgba(6, 182, 212, 0.5);
+}
+
+.status-sidebar-card.status-lenteur .talent-card__header {
+  border-bottom-color: rgba(6, 182, 212, 0.25);
+}
+
+.status-sidebar-card.status-lenteur .talent-card__icon {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+.status-sidebar-card.status-lenteur:hover {
+  border-color: rgba(6, 182, 212, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(6, 182, 212, 0.35);
+}
+
+/* Confusion - Violet */
+.status-sidebar-card.status-confusion {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.status-sidebar-card.status-confusion .talent-card__header {
+  border-bottom-color: rgba(168, 85, 247, 0.25);
+}
+
+.status-sidebar-card.status-confusion .talent-card__icon {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.35);
+}
+
+.status-sidebar-card.status-confusion:hover {
+  border-color: rgba(168, 85, 247, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(168, 85, 247, 0.35);
+}
+
+/* Affaiblissement - Withered Gold */
+.status-sidebar-card.status-affaiblissement {
+  border-color: rgba(197, 179, 144, 0.5);
+}
+
+.status-sidebar-card.status-affaiblissement .talent-card__header {
+  border-bottom-color: rgba(197, 179, 144, 0.25);
+}
+
+.status-sidebar-card.status-affaiblissement .talent-card__icon {
+  background: rgba(197, 179, 144, 0.15);
+  border-color: rgba(197, 179, 144, 0.35);
+}
+
+.status-sidebar-card.status-affaiblissement:hover {
+  border-color: rgba(197, 179, 144, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 179, 144, 0.35);
+}
+
+/* Terreur - Slate Grey */
+.status-sidebar-card.status-terreur {
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.status-sidebar-card.status-terreur .talent-card__header {
+  border-bottom-color: rgba(148, 163, 184, 0.25);
+}
+
+.status-sidebar-card.status-terreur .talent-card__icon {
+  background: rgba(148, 163, 184, 0.15);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.status-sidebar-card.status-terreur:hover {
+  border-color: rgba(148, 163, 184, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(148, 163, 184, 0.35);
+}
+
+/* Hémorragie - Red */
+.status-sidebar-card.status-hemorragie {
+  border-color: rgba(255, 51, 51, 0.5);
+}
+
+.status-sidebar-card.status-hemorragie .talent-card__header {
+  border-bottom-color: rgba(255, 51, 51, 0.25);
+}
+
+.status-sidebar-card.status-hemorragie .talent-card__icon {
+  background: rgba(255, 51, 51, 0.15);
+  border-color: rgba(255, 51, 51, 0.35);
+}
+
+.status-sidebar-card.status-hemorragie:hover {
+  border-color: rgba(255, 51, 51, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 51, 51, 0.35);
+}
+
+/* Choc - Yellow */
+.status-sidebar-card.status-choc {
+  border-color: rgba(250, 204, 21, 0.5);
+}
+
+.status-sidebar-card.status-choc .talent-card__header {
+  border-bottom-color: rgba(250, 204, 21, 0.25);
+}
+
+.status-sidebar-card.status-choc .talent-card__icon {
+  background: rgba(250, 204, 21, 0.15);
+  border-color: rgba(250, 204, 21, 0.35);
+}
+
+.status-sidebar-card.status-choc:hover {
+  border-color: rgba(250, 204, 21, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(250, 204, 21, 0.35);
+}
+
+/* Marque - Rose/Pink */
+.status-sidebar-card.status-marque {
+  border-color: rgba(236, 72, 153, 0.5);
+}
+
+.status-sidebar-card.status-marque .talent-card__header {
+  border-bottom-color: rgba(236, 72, 153, 0.25);
+}
+
+.status-sidebar-card.status-marque .talent-card__icon {
+  background: rgba(236, 72, 153, 0.15);
+  border-color: rgba(236, 72, 153, 0.35);
+}
+
+.status-sidebar-card.status-marque:hover {
+  border-color: rgba(236, 72, 153, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(236, 72, 153, 0.35);
+}
+
+/* Bouclier - Blue */
+.status-sidebar-card.status-bouclier {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.status-sidebar-card.status-bouclier .talent-card__header {
+  border-bottom-color: rgba(59, 130, 246, 0.25);
+}
+
+.status-sidebar-card.status-bouclier .talent-card__icon {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.status-sidebar-card.status-bouclier:hover {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(59, 130, 246, 0.35);
+}
+
+/* --- Aligned colors for search result status cards (.talent-card) --- */
+
+/* Poison - Green */
+.talent-card.status-search-card.status-poison {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.talent-card.status-search-card.status-poison .talent-card__header {
+  border-bottom-color: rgba(16, 185, 129, 0.25);
+}
+
+.talent-card.status-search-card.status-poison .talent-card__icon {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.talent-card.status-search-card.status-poison:hover {
   border-color: rgba(16, 185, 129, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-brulure {
+/* Brûlure - Orange */
+.talent-card.status-search-card.status-brulure {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+.talent-card.status-search-card.status-brulure .talent-card__header {
+  border-bottom-color: rgba(249, 115, 22, 0.25);
+}
+
+.talent-card.status-search-card.status-brulure .talent-card__icon {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.talent-card.status-search-card.status-brulure:hover {
   border-color: rgba(249, 115, 22, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(249, 115, 22, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-lenteur {
+/* Lenteur - Cyan */
+.talent-card.status-search-card.status-lenteur {
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.talent-card.status-search-card.status-lenteur .talent-card__header {
+  border-bottom-color: rgba(6, 182, 212, 0.25);
+}
+
+.talent-card.status-search-card.status-lenteur .talent-card__icon {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+.talent-card.status-search-card.status-lenteur:hover {
   border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(6, 182, 212, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-confusion {
+/* Confusion - Violet */
+.talent-card.status-search-card.status-confusion {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.talent-card.status-search-card.status-confusion .talent-card__header {
+  border-bottom-color: rgba(168, 85, 247, 0.25);
+}
+
+.talent-card.status-search-card.status-confusion .talent-card__icon {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.35);
+}
+
+.talent-card.status-search-card.status-confusion:hover {
   border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 85, 247, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-affaiblissement {
-  border-color: rgba(234, 179, 8, 0.6);
+/* Affaiblissement - Withered Gold */
+.talent-card.status-search-card.status-affaiblissement {
+  border-color: rgba(197, 179, 144, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-terreur {
-  border-color: rgba(239, 68, 68, 0.6);
+.talent-card.status-search-card.status-affaiblissement .talent-card__header {
+  border-bottom-color: rgba(197, 179, 144, 0.25);
 }
 
-.sidebar-card[data-type="status"].status-hemorragie {
+.talent-card.status-search-card.status-affaiblissement .talent-card__icon {
+  background: rgba(197, 179, 144, 0.15);
+  border-color: rgba(197, 179, 144, 0.35);
+}
+
+.talent-card.status-search-card.status-affaiblissement:hover {
+  border-color: rgba(197, 179, 144, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(197, 179, 144, 0.4);
+}
+
+/* Terreur - Slate Grey */
+.talent-card.status-search-card.status-terreur {
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.talent-card.status-search-card.status-terreur .talent-card__header {
+  border-bottom-color: rgba(148, 163, 184, 0.25);
+}
+
+.talent-card.status-search-card.status-terreur .talent-card__icon {
+  background: rgba(148, 163, 184, 0.15);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.talent-card.status-search-card.status-terreur:hover {
+  border-color: rgba(148, 163, 184, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(148, 163, 184, 0.4);
+}
+
+/* Hémorragie - Red */
+.talent-card.status-search-card.status-hemorragie {
+  border-color: rgba(255, 51, 51, 0.4);
+}
+
+.talent-card.status-search-card.status-hemorragie .talent-card__header {
+  border-bottom-color: rgba(255, 51, 51, 0.25);
+}
+
+.talent-card.status-search-card.status-hemorragie .talent-card__icon {
+  background: rgba(255, 51, 51, 0.15);
+  border-color: rgba(255, 51, 51, 0.35);
+}
+
+.talent-card.status-search-card.status-hemorragie:hover {
   border-color: rgba(255, 51, 51, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 51, 51, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-choc {
+/* Choc - Yellow */
+.talent-card.status-search-card.status-choc {
+  border-color: rgba(250, 204, 21, 0.4);
+}
+
+.talent-card.status-search-card.status-choc .talent-card__header {
+  border-bottom-color: rgba(250, 204, 21, 0.25);
+}
+
+.talent-card.status-search-card.status-choc .talent-card__icon {
+  background: rgba(250, 204, 21, 0.15);
+  border-color: rgba(250, 204, 21, 0.35);
+}
+
+.talent-card.status-search-card.status-choc:hover {
   border-color: rgba(250, 204, 21, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(250, 204, 21, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-marque {
+/* Marque - Rose/Pink */
+.talent-card.status-search-card.status-marque {
+  border-color: rgba(236, 72, 153, 0.4);
+}
+
+.talent-card.status-search-card.status-marque .talent-card__header {
+  border-bottom-color: rgba(236, 72, 153, 0.25);
+}
+
+.talent-card.status-search-card.status-marque .talent-card__icon {
+  background: rgba(236, 72, 153, 0.15);
+  border-color: rgba(236, 72, 153, 0.35);
+}
+
+.talent-card.status-search-card.status-marque:hover {
   border-color: rgba(236, 72, 153, 0.6);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(236, 72, 153, 0.4);
 }
 
-.sidebar-card[data-type="status"].status-bouclier {
+/* Bouclier - Blue */
+.talent-card.status-search-card.status-bouclier {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.talent-card.status-search-card.status-bouclier .talent-card__header {
+  border-bottom-color: rgba(59, 130, 246, 0.25);
+}
+
+.talent-card.status-search-card.status-bouclier .talent-card__icon {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.talent-card.status-search-card.status-bouclier:hover {
   border-color: rgba(59, 130, 246, 0.6);
-}
-
-.sidebar-card__duration {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 40px rgba(59, 130, 246, 0.4);
 }
